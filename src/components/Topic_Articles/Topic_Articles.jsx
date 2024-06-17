@@ -23,19 +23,21 @@ export default function Topic_Articles({ articles, setAllArticles }) {
 
   useEffect(() => {
     if (!isArticleLoading) {
-      isArticleLoading = true;
+      setIsArticleLoading(true);
       //   console.log("Article Loading State " + isArticleLoading);
       fetchArticles().then((articles) => {
         // console.log(articles, "Articles");
         setAllArticles(articles);
         setArticlesShowing(articles);
-        isArticleLoading = false;
+        setIsArticleLoading(false);
         // console.log("Article Loading State " + isArticleLoading);
       });
     }
   }, []);
 
-  console.log(articlesShowing);
+  if (isArticleLoading) {
+    return <p>Loading Content...</p>;
+  }
 
   return (
     <div>
