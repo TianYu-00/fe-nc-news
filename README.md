@@ -7,7 +7,7 @@ Task 1 - CORE: Create a React project and a public repo ✅ Submitted PR ✅
 
 Task 2 - CORE: Enable CORS on BE repo ✅ Submitted PR ✅
 
-Task 3 - CORE: Planning ✅ Submitted PR
+Task 3 - CORE: Planning ✅ Submitted PR ✅
 
 Task 4 - CORE: View a list of all articles
 
