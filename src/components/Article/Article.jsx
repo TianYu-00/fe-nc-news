@@ -26,7 +26,6 @@ export default function Article() {
   const [commentsShowing, setCommentsShowing] = useState([]);
   const [isCommentLoading, setIsCommentLoading] = useState(false);
   const [allUsers, setAllUsers] = useState([]);
-  const [isArticleFound, setIsArticleFound] = useState(undefined);
 
   useEffect(() => {
     fetchUsers().then((users) => {
@@ -37,13 +36,11 @@ export default function Article() {
       setIsArticleLoading(true);
       fetchArticle(Number(article_id))
         .then((article) => {
-          setIsArticleFound(true);
           setArticle(article);
           setIsArticleLoading(false);
         })
         .catch((error) => {
           if (error.request.status === 404) {
-            setIsArticleFound(false);
             setIsArticleLoading(false);
           }
         });
@@ -59,12 +56,12 @@ export default function Article() {
     }
   }, [article_id, isCommentShowing]);
 
-  if (isArticleLoading) {
-    return <p>Loading Content...</p>;
+  if (!article && !isArticleLoading) {
+    return <h2>Article Does Not Exist</h2>;
   }
 
-  if (!isArticleFound && !isArticleLoading) {
-    return <h2>Article Does Not Exist</h2>;
+  if (!article) {
+    return <p>Loading Content...</p>;
   }
 
   let articleDate = new Date(article.created_at).toUTCString();
