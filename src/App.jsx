@@ -11,7 +11,6 @@ import Topic_Articles from "./components/Topic_Articles/Topic_Articles";
 import Article from "./components/Article/Article";
 
 function App() {
-  const [articles, setAllArticles] = useState([]);
   return (
     <>
       <BrowserRouter>
@@ -20,10 +19,7 @@ function App() {
           <Route path="/" element={<Home />} />
           <Route path="/home" element={<Home />} />
           <Route path="/login" element={<Login />} />
-          <Route
-            path="/topic_articles"
-            element={<Topic_Articles articles={articles} setAllArticles={setAllArticles} />}
-          />
+          <Route path="/topic_articles" element={<Topic_Articles />} />
           <Route path="/article/:article_id" element={<Article />} />
         </Routes>
       </BrowserRouter>

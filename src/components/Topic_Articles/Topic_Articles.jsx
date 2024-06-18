@@ -13,7 +13,8 @@ import Paper from "@mui/material/Paper";
 import Stack from "@mui/material/Stack";
 import { Link } from "react-router-dom";
 
-export default function Topic_Articles({ articles, setAllArticles }) {
+export default function Topic_Articles() {
+  const [articles, setAllArticles] = useState([]);
   const [isArticleLoading, setIsArticleLoading] = useState(false);
   const [allTopics, setAllTopics] = useState([]);
   const [selectedTopic, setSelectedTopic] = useState("");
@@ -24,13 +25,10 @@ export default function Topic_Articles({ articles, setAllArticles }) {
   useEffect(() => {
     if (!isArticleLoading) {
       setIsArticleLoading(true);
-      //   console.log("Article Loading State " + isArticleLoading);
       fetchArticles().then((articles) => {
-        // console.log(articles, "Articles");
         setAllArticles(articles);
         setArticlesShowing(articles);
         setIsArticleLoading(false);
-        // console.log("Article Loading State " + isArticleLoading);
       });
     }
   }, []);
