@@ -2,6 +2,8 @@
 
 https://nc-portfolio-1.onrender.com/api
 
+https://l2c.northcoders.com/courses/fe/fe-nc-news
+
 <!-- 
 Task 1 - CORE: Create a React project and a public repo ✅ Submitted PR ✅
 
