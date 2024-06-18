@@ -12,7 +12,24 @@ export const fetchArticles = () => {
 };
 
 export const fetchArticle = (articleID) => {
-  return api.get(`/articles/${articleID}`).then((response) => {
+  return api
+    .get(`/articles/${articleID}`)
+    .then((response) => {
+      return response.data;
+    })
+    .catch((error) => {
+      throw error;
+    });
+};
+
+export const fetchCommentsOnArticle = (articleID) => {
+  return api.get(`/articles/${articleID}/comments`).then((response) => {
+    return response.data;
+  });
+};
+
+export const fetchUsers = () => {
+  return api.get(`/users`).then((response) => {
     return response.data;
   });
 };
