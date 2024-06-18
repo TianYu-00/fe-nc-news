@@ -2,6 +2,7 @@ import { BrowserRouter, Routes, Route } from "react-router-dom";
 import "./App.css";
 import React, { useState, useEffect } from "react";
 import { fetchArticles } from "./api";
+import { UserLoginProvider } from "./components/UserLoginProvider/UserLoginProvider";
 
 // routes
 import Header from "./components/Header/Header";
@@ -14,14 +15,16 @@ function App() {
   return (
     <>
       <BrowserRouter>
-        <Header />
-        <Routes>
-          <Route path="/" element={<Home />} />
-          <Route path="/home" element={<Home />} />
-          <Route path="/login" element={<Login />} />
-          <Route path="/topic_articles" element={<Topic_Articles />} />
-          <Route path="/article/:article_id" element={<Article />} />
-        </Routes>
+        <UserLoginProvider>
+          <Header />
+          <Routes>
+            <Route path="/" element={<Home />} />
+            <Route path="/home" element={<Home />} />
+            <Route path="/login" element={<Login />} />
+            <Route path="/topic_articles" element={<Topic_Articles />} />
+            <Route path="/article/:article_id" element={<Article />} />
+          </Routes>
+        </UserLoginProvider>
       </BrowserRouter>
     </>
   );
