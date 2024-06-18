@@ -1,5 +1,6 @@
-import React, { useState, useEffect } from "react";
-import { fetchCommentsOnArticle, fetchUsers } from "../../api";
+import React, { useState, useEffect, useContext } from "react";
+import { fetchCommentsOnArticle, fetchUsers, postCommentOnArticle } from "../../api";
+import { LoginContext } from "../UserLoginProvider/UserLoginProvider";
 import ThumbUpIcon from "@mui/icons-material/ThumbUp";
 import IconButton from "@mui/material/IconButton";
 import Accordion from "@mui/material/Accordion";
@@ -12,6 +13,8 @@ import Grid from "@mui/material/Unstable_Grid2";
 import Button from "@mui/material/Button";
 import Skeleton from "@mui/material/Skeleton";
 import Avatar from "@mui/material/Avatar";
+import Alert from "@mui/material/Alert";
+import { Link } from "react-router-dom";
 
 export default function ArticleComments({ articleId }) {
   const [isCommentShowing, setIsCommentShowing] = useState(false);
@@ -19,13 +22,21 @@ export default function ArticleComments({ articleId }) {
   const [commentsShowing, setCommentsShowing] = useState([]);
   const [isCommentLoading, setIsCommentLoading] = useState(false);
   const [allUsers, setAllUsers] = useState([]);
+  const [newComment, setNewComment] = useState("");
 
+  const { isLogin, user } = useContext(LoginContext);
+  const [isNeedLoginVisible, setIsNeedLoginVisible] = useState(false);
+  const [isEmptyCommentVisible, setIsEmptyCommentVisible] = useState(false);
+  const [isSendCommentSuccessful, setIsSendCommentSuccessful] = useState(false);
+  const [isSendUnsuccessful, setIsSendUnsuccessful] = useState(false);
+
+  let counter = 0;
   useEffect(() => {
     fetchUsers().then((users) => {
       setAllUsers(users);
     });
 
-    if (isCommentShowing && allComments.length <= 0) {
+    if ((isCommentShowing && allComments.length <= 0) || (isCommentShowing && !isSendCommentSuccessful)) {
       setIsCommentLoading(true);
       fetchCommentsOnArticle(Number(articleId)).then((comments) => {
         setAllComments(comments);
@@ -33,11 +44,55 @@ export default function ArticleComments({ articleId }) {
         setIsCommentLoading(false);
       });
     }
-  }, [articleId, isCommentShowing]);
+    counter++;
+    console.log(counter);
+  }, [articleId, isCommentShowing, isSendCommentSuccessful]);
 
   function onClickHandle_commentSection() {
     if (!isCommentShowing) {
       setIsCommentShowing(true);
+    }
+  }
+
+  function onChange_newComment(event) {
+    setNewComment(event.target.value);
+  }
+
+  function onClickHandle_sendNewComment() {
+    if (isLogin) {
+      if (newComment !== "") {
+        // Fake it till you make it
+        setIsSendCommentSuccessful(true);
+        const tempTime = new Date();
+        const formattedDateTime = tempTime.toISOString();
+        const tempComment = {
+          votes: 0,
+          created_at: formattedDateTime,
+          author: "jessjelly",
+          body: newComment,
+        };
+        console.log(tempComment);
+
+        // Make it
+        setCommentsShowing([tempComment, ...commentsShowing]);
+        // Now post it to my db
+        postCommentOnArticle(articleId, newComment, user.username)
+          .then((response) => {
+            setNewComment("");
+            setTimeout(() => setIsSendCommentSuccessful(false), 2500);
+          })
+          .catch((error) => {
+            // console.log(error);
+            setIsSendUnsuccessful(true);
+            setTimeout(() => setIsSendUnsuccessful(false), 2500);
+          });
+      } else {
+        setIsEmptyCommentVisible(true);
+        setTimeout(() => setIsEmptyCommentVisible(false), 2500);
+      }
+    } else {
+      setIsNeedLoginVisible(true);
+      setTimeout(() => setIsNeedLoginVisible(false), 2500);
     }
   }
 
@@ -54,12 +109,29 @@ export default function ArticleComments({ articleId }) {
         <Typography>{isCommentLoading ? "Loading Comments..." : "Show/Hide Comment Section"} </Typography>
       </AccordionSummary>
       <AccordionDetails>
+        {isNeedLoginVisible && (
+          <Alert severity="error" action={<Link to="/login">Login</Link>}>
+            Not Logged In.
+          </Alert>
+        )}
+        {isEmptyCommentVisible && <Alert severity="warning">Comment can not be empty.</Alert>}
+        {isSendCommentSuccessful && <Alert severity="success">Comment has been sent.</Alert>}
+        {isSendUnsuccessful && <Alert severity="error">Server failed to process the comment.</Alert>}
+
         <Grid container>
           <Grid xs={12}>
-            <TextField id="filled-multiline-static" fullWidth label="Comment" multiline rows={2} defaultValue="" />
+            <TextField
+              id="filled-multiline-static"
+              fullWidth
+              label="Comment"
+              multiline
+              rows={2}
+              value={newComment}
+              onChange={onChange_newComment}
+            />
           </Grid>
           <Grid xs={12} container sx={{ marginTop: "10px" }} justifyContent="flex-end">
-            <Button variant="contained" color="success">
+            <Button variant="contained" color="success" onClick={onClickHandle_sendNewComment}>
               Send
             </Button>
           </Grid>
