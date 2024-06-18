@@ -13,7 +13,7 @@ Task 4 - CORE: View a list of all articles ✅ Submitted PR ✅
 
 Task 5 - CORE: View an individual article  ✅ Submitted PR ✅
 
-Task 6 - CORE: View a list of comments associated with an article
+Task 6 - CORE: View a list of comments associated with an article ✅ Submitted PR ✅
 
 Task 7 - CORE: Vote on an article
 
