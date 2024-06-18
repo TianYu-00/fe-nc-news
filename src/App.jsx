@@ -24,7 +24,7 @@ function App() {
             path="/topic_articles"
             element={<Topic_Articles articles={articles} setAllArticles={setAllArticles} />}
           />
-          <Route path="/article" element={<Article />} />
+          <Route path="/article/:article_id" element={<Article />} />
         </Routes>
       </BrowserRouter>
     </>

@@ -9,9 +9,9 @@ Task 2 - CORE: Enable CORS on BE repo ✅ Submitted PR ✅
 
 Task 3 - CORE: Planning ✅ Submitted PR ✅
 
-Task 4 - CORE: View a list of all articles
+Task 4 - CORE: View a list of all articles ✅ Submitted PR ✅
 
-Task 5 - CORE: View an individual article
+Task 5 - CORE: View an individual article  ✅
 
 Task 6 - CORE: View a list of comments associated with an article
 
