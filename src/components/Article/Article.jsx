@@ -19,7 +19,7 @@ export default function Article() {
     return <p>Loading Content...</p>;
   }
 
-  console.log(article);
+  // console.log(article);
   let articleDate = new Date(article.created_at).toUTCString();
   return (
     <>
