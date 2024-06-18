@@ -4,7 +4,7 @@ import Grid from "@mui/material/Unstable_Grid2";
 export default function Header() {
   return (
     <>
-      <h1>Header </h1>
+      <h1>NC News</h1>
       <Grid container spacing={2} sx={{ justifyContent: "center" }}>
         <Grid>
           <Link to="/home">Home</Link>

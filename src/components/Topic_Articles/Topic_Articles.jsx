@@ -14,12 +14,12 @@ import Stack from "@mui/material/Stack";
 import { Link } from "react-router-dom";
 
 export default function Topic_Articles({ articles, setAllArticles }) {
-  let [isArticleLoading, setIsArticleLoading] = useState(false);
+  const [isArticleLoading, setIsArticleLoading] = useState(false);
   const [allTopics, setAllTopics] = useState([]);
-  let [selectedTopic, setSelectedTopic] = useState("");
+  const [selectedTopic, setSelectedTopic] = useState("");
   const [articlesShowing, setArticlesShowing] = useState([]);
   const [selectedArticle, setSelectedArticle] = useState([]);
-  let [sortBy, setSortBy] = useState("");
+  const [sortBy, setSortBy] = useState("");
 
   useEffect(() => {
     if (!isArticleLoading) {
