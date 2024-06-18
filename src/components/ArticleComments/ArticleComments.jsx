@@ -30,13 +30,14 @@ export default function ArticleComments({ articleId }) {
   const [isSendCommentSuccessful, setIsSendCommentSuccessful] = useState(false);
   const [isSendUnsuccessful, setIsSendUnsuccessful] = useState(false);
 
-  let counter = 0;
   useEffect(() => {
     fetchUsers().then((users) => {
       setAllUsers(users);
     });
+  }, []);
 
-    if ((isCommentShowing && allComments.length <= 0) || (isCommentShowing && !isSendCommentSuccessful)) {
+  useEffect(() => {
+    if (isCommentShowing && (allComments.length <= 0 || !isSendCommentSuccessful)) {
       setIsCommentLoading(true);
       fetchCommentsOnArticle(Number(articleId)).then((comments) => {
         setAllComments(comments);
@@ -44,8 +45,6 @@ export default function ArticleComments({ articleId }) {
         setIsCommentLoading(false);
       });
     }
-    counter++;
-    console.log(counter);
   }, [articleId, isCommentShowing, isSendCommentSuccessful]);
 
   function onClickHandle_commentSection() {
@@ -71,10 +70,9 @@ export default function ArticleComments({ articleId }) {
           author: user.username,
           body: newComment,
         };
-        console.log(tempComment);
 
         // Make it
-        setCommentsShowing([tempComment, ...commentsShowing]);
+        setCommentsShowing((oldComments) => [tempComment, ...oldComments]);
         // Now post it to my db
         postCommentOnArticle(articleId, newComment, user.username)
           .then((response) => {
@@ -82,7 +80,6 @@ export default function ArticleComments({ articleId }) {
             setTimeout(() => setIsSendCommentSuccessful(false), 2500);
           })
           .catch((error) => {
-            // console.log(error);
             setIsSendUnsuccessful(true);
             setTimeout(() => setIsSendUnsuccessful(false), 2500);
           });
