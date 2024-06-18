@@ -22,6 +22,19 @@ export const fetchArticle = (articleID) => {
     });
 };
 
+export const patchArticle = (articleID, value) => {
+  return api
+    .patch(`/articles/${articleID}`, {
+      inc_votes: value,
+    })
+    .then((response) => {
+      return response.data;
+    })
+    .catch((error) => {
+      throw error;
+    });
+};
+
 export const fetchCommentsOnArticle = (articleID) => {
   return api.get(`/articles/${articleID}/comments`).then((response) => {
     return response.data;
