@@ -68,7 +68,7 @@ export default function ArticleComments({ articleId }) {
         const tempComment = {
           votes: 0,
           created_at: formattedDateTime,
-          author: "jessjelly",
+          author: user.username,
           body: newComment,
         };
         console.log(tempComment);
