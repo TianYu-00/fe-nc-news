@@ -56,7 +56,12 @@ export const postCommentOnArticle = (articleID, body, username) => {
 };
 
 export const fetchUsers = () => {
-  return api.get(`/users`).then((response) => {
-    return response.data;
-  });
+  return api
+    .get(`/users`)
+    .then((response) => {
+      return response.data;
+    })
+    .catch((error) => {
+      throw error;
+    });
 };
