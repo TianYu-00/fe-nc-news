@@ -1,5 +1,5 @@
-import React, { useState, useEffect, useContext } from "react";
-import { fetchCommentsOnArticle, fetchUsers, postCommentOnArticle } from "../../api";
+import React, { useState, useEffect, useContext, useRef } from "react";
+import { fetchCommentsOnArticle, fetchUsers, postCommentOnArticle, deleteCommentById } from "../../api";
 import { LoginContext } from "../UserLoginProvider/UserLoginProvider";
 import ThumbUpIcon from "@mui/icons-material/ThumbUp";
 import IconButton from "@mui/material/IconButton";
@@ -15,6 +15,7 @@ import Skeleton from "@mui/material/Skeleton";
 import Avatar from "@mui/material/Avatar";
 import Alert from "@mui/material/Alert";
 import { Link } from "react-router-dom";
+import DeleteIcon from "@mui/icons-material/Delete";
 
 export default function ArticleComments({ articleId }) {
   const [isCommentShowing, setIsCommentShowing] = useState(false);
@@ -29,6 +30,10 @@ export default function ArticleComments({ articleId }) {
   const [isEmptyCommentVisible, setIsEmptyCommentVisible] = useState(false);
   const [isSendCommentSuccessful, setIsSendCommentSuccessful] = useState(false);
   const [isSendUnsuccessful, setIsSendUnsuccessful] = useState(false);
+
+  const textFieldRef = useRef(null);
+
+  const [isSendingComment, setIsSendingComment] = useState(false);
 
   useEffect(() => {
     fetchUsers().then((users) => {
@@ -53,10 +58,6 @@ export default function ArticleComments({ articleId }) {
     }
   }
 
-  function onChange_newComment(event) {
-    setNewComment(event.target.value);
-  }
-
   function onClickHandle_sendNewComment() {
     if (isLogin) {
       if (newComment !== "") {
@@ -69,7 +70,9 @@ export default function ArticleComments({ articleId }) {
           created_at: formattedDateTime,
           author: user.username,
           body: newComment,
+          isFake: true,
         };
+        setIsSendingComment(true);
 
         // Make it
         setCommentsShowing((oldComments) => [tempComment, ...oldComments]);
@@ -77,10 +80,15 @@ export default function ArticleComments({ articleId }) {
         postCommentOnArticle(articleId, newComment, user.username)
           .then((response) => {
             setNewComment("");
+            if (textFieldRef.current) {
+              textFieldRef.current.value = "";
+            }
+            setIsSendingComment(false);
             setTimeout(() => setIsSendCommentSuccessful(false), 2500);
           })
           .catch((error) => {
             setIsSendUnsuccessful(true);
+            setIsSendingComment(false);
             setTimeout(() => setIsSendUnsuccessful(false), 2500);
           });
       } else {
@@ -91,6 +99,17 @@ export default function ArticleComments({ articleId }) {
       setIsNeedLoginVisible(true);
       setTimeout(() => setIsNeedLoginVisible(false), 2500);
     }
+  }
+
+  function onClickHandle_deleteComment(commentID) {
+    console.log("Clicked Delete");
+    deleteCommentById(commentID)
+      .then(() => {
+        setCommentsShowing((prevComments) => prevComments.filter((comment) => comment.comment_id !== commentID));
+      })
+      .catch((error) => {
+        console.log("delete comment error");
+      });
   }
 
   return (
@@ -123,18 +142,22 @@ export default function ArticleComments({ articleId }) {
               label="Comment"
               multiline
               rows={2}
-              value={newComment}
-              onChange={onChange_newComment}
+              inputRef={textFieldRef}
+              onBlur={() => {
+                setNewComment(event.target.value);
+              }}
             />
           </Grid>
           <Grid xs={12} container sx={{ marginTop: "10px" }} justifyContent="flex-end">
-            <Button variant="contained" color="success" onClick={onClickHandle_sendNewComment}>
-              Send
-            </Button>
+            {!isSendingComment ? (
+              <Button variant="contained" color="success" onClick={onClickHandle_sendNewComment}>
+                Send
+              </Button>
+            ) : null}
           </Grid>
         </Grid>
 
-        {isCommentLoading ? <Skeleton animation="wave" /> : <p />}
+        {isCommentLoading ? <p>Syncing Comments...</p> : <p />}
 
         {commentsShowing.map((comment, index) => {
           const commentDate = new Date(comment.created_at).toLocaleString("en-UK", {
@@ -147,6 +170,9 @@ export default function ArticleComments({ articleId }) {
             }
             return tempURL;
           }, "");
+
+          const isRealComment = !comment.isFake;
+
           return (
             <React.Fragment key={index}>
               <Grid container wrap="nowrap" sx={{ marginBottom: "20px", borderBottom: "1px solid grey" }}>
@@ -170,11 +196,27 @@ export default function ArticleComments({ articleId }) {
                   <Grid xs={12} sx={{}}>
                     {comment.body}
                   </Grid>
-                  <IconButton sx={{}} aria-label="upvotes">
+
+                  <IconButton sx={{}} aria-label="upvotes" disabled={!isRealComment}>
                     <ThumbUpIcon fontSize="small" />
                     {comment.votes}
                   </IconButton>
                   <Grid sx={{ display: "flex", alignItems: "center", marginLeft: "10px" }}>{commentDate}</Grid>
+
+                  {isRealComment && comment.author === user.username ? (
+                    <IconButton
+                      aria-label="delete"
+                      onClick={() => {
+                        onClickHandle_deleteComment(comment.comment_id);
+                      }}
+                    >
+                      <DeleteIcon fontSize="small" />
+                    </IconButton>
+                  ) : (
+                    <IconButton aria-label="delete" disabled title="Cannot delete fake comment">
+                      <DeleteIcon fontSize="small" />
+                    </IconButton>
+                  )}
                 </Grid>
               </Grid>
             </React.Fragment>
