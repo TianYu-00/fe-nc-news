@@ -17,9 +17,9 @@ Task 5 - CORE: View an individual article  ✅ Submitted PR ✅
 
 Task 6 - CORE: View a list of comments associated with an article ✅ Submitted PR ✅
 
-Task 7 - CORE: Vote on an article
+Task 7 - CORE: Vote on an article ✅ Submitted PR ✅
 
-Task 8 - CORE: Post a new comment to an existing article
+Task 8 - CORE: Post a new comment to an existing article ✅ Submitted PR ✅
 
 Task 9 - CORE: Delete comments
 
