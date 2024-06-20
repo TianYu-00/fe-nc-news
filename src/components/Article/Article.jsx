@@ -6,7 +6,9 @@ import ThumbDownIcon from "@mui/icons-material/ThumbDown";
 import IconButton from "@mui/material/IconButton";
 import Comments from "../ArticleComments/ArticleComments";
 import Alert from "@mui/material/Alert";
-import CheckIcon from "@mui/icons-material/Check";
+import Box from "@mui/material/Box";
+import Typography from "@mui/material/Typography";
+import Grid from "@mui/material/Unstable_Grid2";
 
 export default function Article() {
   const { article_id } = useParams();
@@ -67,45 +69,52 @@ export default function Article() {
 
   return (
     <>
-      <h2>{article.title}</h2>
-      <img
-        src={article.article_img_url}
-        alt={article.title}
-        style={{ maxWidth: "1000px", width: "100%", objectFit: "cover" }}
-        loading="lazy"
-      />
-      <p>Author: {article.author}</p>
-      <p>{articleDate}</p>
-      <p>{article.body}</p>
-      {voteSuccessAlertVisible && (
-        <Alert severity="success" variant="outlined">
-          Vote went through successfully
-        </Alert>
-      )}
-      {voteErrorAlertVisible && (
-        <Alert severity="error" variant="outlined">
-          {voteErrorMessage}
-        </Alert>
-      )}
-      <IconButton
-        aria-label="article upvotes"
-        onClick={() => {
-          onClickHandle_vote(1);
-        }}
-      >
-        <ThumbUpIcon />
-      </IconButton>
-      {currentVote}
-      <IconButton
-        aria-label="article upvotes"
-        onClick={() => {
-          onClickHandle_vote(-1);
-        }}
-      >
-        <ThumbDownIcon />
-      </IconButton>
+      <Box sx={{ maxWidth: "1500px", margin: "0 auto" }}>
+        <h2>{article.title}</h2>
+        <img
+          src={article.article_img_url}
+          alt={article.title}
+          style={{ maxWidth: "1000px", width: "100%", objectFit: "cover" }}
+          loading="lazy"
+        />
+        <p>Author: {article.author}</p>
+        <p>{articleDate}</p>
+        <Box sx={{ padding: "25px" }}>
+          <p>{article.body}</p>
+        </Box>
 
-      <Comments articleId={article_id} />
+        {voteSuccessAlertVisible && (
+          <Alert severity="success" variant="outlined">
+            Vote went through successfully
+          </Alert>
+        )}
+        {voteErrorAlertVisible && (
+          <Alert severity="error" variant="outlined">
+            {voteErrorMessage}
+          </Alert>
+        )}
+        <IconButton
+          aria-label="article upvotes"
+          onClick={() => {
+            onClickHandle_vote(1);
+          }}
+        >
+          <ThumbUpIcon />
+        </IconButton>
+        {currentVote}
+        <IconButton
+          aria-label="article upvotes"
+          onClick={() => {
+            onClickHandle_vote(-1);
+          }}
+        >
+          <ThumbDownIcon />
+        </IconButton>
+
+        <Box sx={{ marginTop: "25px" }} />
+
+        <Comments articleId={article_id} />
+      </Box>
     </>
   );
 }
