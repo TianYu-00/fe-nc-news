@@ -7,10 +7,12 @@ import Button from "@mui/material/Button";
 import Stack from "@mui/material/Stack";
 import Box from "@mui/material/Box";
 import CircularProgress from "@mui/material/CircularProgress";
-import { green } from "@mui/material/colors";
+import { blueGrey, green, grey } from "@mui/material/colors";
 import Snackbar from "@mui/material/Snackbar";
 import IconButton from "@mui/material/IconButton";
 import CloseIcon from "@mui/icons-material/Close";
+import Grid from "@mui/material/Unstable_Grid2";
+import Avatar from "@mui/material/Avatar";
 
 export default function Login() {
   const { isLogin, setIsLogin, user, setUser } = useContext(LoginContext);
@@ -115,7 +117,7 @@ export default function Login() {
 
   if (onLoad) {
     return (
-      <Box sx={{ display: "flex", justifyContent: "center", alignItems: "center", height: "50px" }}>
+      <Box sx={{ display: "flex", justifyContent: "center", alignItems: "center", height: "50vh" }}>
         <CircularProgress />
       </Box>
     );
@@ -123,44 +125,82 @@ export default function Login() {
 
   return (
     <>
-      <h2>Login</h2>
-      {isLogin ? <p>Logged In As: {user.username}</p> : <p>Not Logged In</p>}
-      <Stack spacing={2}>
-        <TextField
-          id="outlined-basic"
-          label="Username"
-          variant="outlined"
-          defaultValue={username}
-          onChange={onTextFieldChange}
-        />
+      <Grid
+        container
+        spacing={0}
+        sx={{
+          border: "1px solid white",
+          justifyContent: "center",
+          alignItems: "center",
+          marginTop: "10vh",
+          borderRadius: "25px",
+          backgroundColor: "#1A2027",
+          paddingLeft: "30px",
+          paddingRight: "30px",
+        }}
+        xs
+      >
+        <Stack spacing={2} sx={{ margin: "50px" }}>
+          <Grid container sx={{ justifyContent: "center", alignItems: "center" }}>
+            <h2>Login</h2>
+          </Grid>
 
-        <Box sx={{ m: 1, position: "relative" }}>
-          {isLogin ? (
-            <Button variant="contained" color="error" onClick={onClickHandle_LogOut}>
-              LogOut
-            </Button>
-          ) : (
-            <Button variant="contained" color="success" sx={buttonSx} disabled={loading} onClick={onClickHandle_Login}>
-              Login
-            </Button>
-          )}
+          <Grid container sx={{ justifyContent: "center", alignItems: "center" }}>
+            <Avatar alt={"place holder"} src={user ? user.avatar_url : null} sx={{ width: 100, height: 100 }} />
+          </Grid>
 
-          {loading && (
-            <CircularProgress
-              size={24}
-              sx={{
-                color: green[500],
-                position: "absolute",
-                top: "50%",
-                left: "50%",
-                marginTop: "-12px",
-                marginLeft: "-12px",
-              }}
+          <Grid container sx={{ justifyContent: "center", alignItems: "center" }}>
+            {isLogin ? <p>{user.username}</p> : null}
+          </Grid>
+
+          <TextField
+            id="outlined-basic"
+            label="Username"
+            variant="outlined"
+            defaultValue={username}
+            onChange={onTextFieldChange}
+          />
+
+          <Box sx={{ m: 1, position: "relative" }}>
+            {isLogin ? (
+              <Button variant="contained" color="error" onClick={onClickHandle_LogOut}>
+                LogOut
+              </Button>
+            ) : (
+              <Button
+                variant="contained"
+                color="success"
+                sx={buttonSx}
+                disabled={loading}
+                onClick={onClickHandle_Login}
+              >
+                Login
+              </Button>
+            )}
+
+            {loading && (
+              <CircularProgress
+                size={24}
+                sx={{
+                  color: green[500],
+                  position: "absolute",
+                  top: "50%",
+                  left: "50%",
+                  marginTop: "-12px",
+                  marginLeft: "-12px",
+                }}
+              />
+            )}
+            <Snackbar
+              open={open}
+              autoHideDuration={3000}
+              onClose={handleClose}
+              message={alertMessage}
+              action={action}
             />
-          )}
-          <Snackbar open={open} autoHideDuration={3000} onClose={handleClose} message={alertMessage} action={action} />
-        </Box>
-      </Stack>
+          </Box>
+        </Stack>
+      </Grid>
     </>
   );
 }
