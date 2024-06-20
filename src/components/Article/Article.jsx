@@ -71,7 +71,7 @@ export default function Article() {
       <img
         src={article.article_img_url}
         alt={article.title}
-        style={{ width: "100%", objectFit: "cover" }}
+        style={{ maxWidth: "1000px", width: "100%", objectFit: "cover" }}
         loading="lazy"
       />
       <p>Author: {article.author}</p>

@@ -1,0 +1,9 @@
+.noDecoLink {
+  text-decoration: none;
+  color: inherit;
+  font-size: large;
+}
+
+.noDecoLink:hover {
+  background-color: #00adb5;
+}

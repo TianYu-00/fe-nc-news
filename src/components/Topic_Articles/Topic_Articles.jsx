@@ -15,6 +15,7 @@ import Stack from "@mui/material/Stack";
 import { Link } from "react-router-dom";
 import ButtonGroup from "@mui/material/ButtonGroup";
 import Button from "@mui/material/Button";
+import Typography from "@mui/material/Typography";
 
 export default function Topic_Articles() {
   const [searchParams, setSearchParams] = useSearchParams();
@@ -86,7 +87,7 @@ export default function Topic_Articles() {
   // console.log(searchParams);
   return (
     <div>
-      <h1>Topic Articles </h1>
+      <h2 style={{}}>Articles </h2>
       {/* Select */}
       <Box sx={{ minWidth: 120, marginBottom: "20px", padding: "10px" }}>
         {/* Main container */}
@@ -161,16 +162,16 @@ export default function Topic_Articles() {
       </Box>
 
       {/* Articles Below */}
-      <Box sx={{ minWidth: 120, border: "1px solid red", width: "100%" }}>
+      <Box sx={{ minWidth: 120, width: "100%" }}>
         <Stack spacing={2}>
           {articlesShowing.map((article, index) => {
             let articleDate = new Date(article.created_at).toLocaleDateString("en-UK");
             return (
               <React.Fragment key={index}>
-                <Link to={`/article/${article.article_id}`}>
+                <Link to={`/article/${article.article_id}`} style={{ textDecoration: "none" }}>
                   <Item sx={{ maxWidth: "750px" }}>
-                    <Grid container sx={{ border: "1px solid blue" }}>
-                      <Grid xs={12} sm={6} sx={{ border: "1px solid pink" }}>
+                    <Grid container>
+                      <Grid xs={12} sm={6}>
                         <img
                           src={article.article_img_url}
                           alt={article.title}
@@ -178,10 +179,16 @@ export default function Topic_Articles() {
                           loading="lazy"
                         />
                       </Grid>
-                      <Grid xs={12} sm={6} sx={{ border: "1px solid pink" }}>
-                        <h4>{article.title}</h4>
-                        <p>{article.author}</p>
-                        <p>Topic: {article.topic}</p>
+                      <Grid xs={12} sm={6}>
+                        <Typography variant="h6" gutterBottom>
+                          {article.title}
+                        </Typography>
+                        <Typography variant="body1" gutterBottom>
+                          {article.author}
+                        </Typography>
+                        <Typography variant="body1" gutterBottom>
+                          Topic: {article.topic}
+                        </Typography>
                       </Grid>
                     </Grid>
                     <Grid>

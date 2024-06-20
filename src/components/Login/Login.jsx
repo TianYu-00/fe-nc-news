@@ -140,7 +140,7 @@ export default function Login() {
               LogOut
             </Button>
           ) : (
-            <Button variant="contained" sx={buttonSx} disabled={loading} onClick={onClickHandle_Login}>
+            <Button variant="contained" color="success" sx={buttonSx} disabled={loading} onClick={onClickHandle_Login}>
               Login
             </Button>
           )}
