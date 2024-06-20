@@ -1,14 +1,68 @@
-# NC News Frontend
+<div align="center">
+<h1> NC News Frontend Web Application </h1> 
+This project involves creating Northcoders News - a social news aggregation, web content rating and discussion website. Northcoders News has articles which are divided into topics, and each article has user-curated ratings from upvotes and downvotes using the API. Users can also add comments about an article. <br><br>
+  
+[![madewithlove](https://img.shields.io/badge/made_with-❤-red?style=for-the-badge&labelColor=orange
+)](https://github.com/Tianyu-00)
 
-https://nc-portfolio-1.onrender.com/api
+[Prerequisites](https://github.com/TianYu-00/fe-nc-news/tree/task14-core-write-a-readme?tab=readme-ov-file#prerequisites) | [Setup Instruction](https://github.com/TianYu-00/fe-nc-news/tree/task14-core-write-a-readme?tab=readme-ov-file#prerequisites) | [Links](https://github.com/TianYu-00/fe-nc-news/tree/task14-core-write-a-readme?tab=readme-ov-file#links)
 
-https://l2c.northcoders.com/courses/fe/fe-nc-news
-
-https://notes.northcoders.com/courses/js-front-end/hosting
-
+![image](https://github.com/TianYu-00/fe-nc-news/assets/66271788/edd6df01-82d6-40cf-b13c-c370ae3058ff) <!-- Place Holder Image -->
 https://fe-nc-news-tian.netlify.app/home
 
+</div>
 
+## Prerequisites
+- [Node.js (v21.7.2)](https://nodejs.org)
+
+
+## Setup instructions
+#### 1. Clone the repository
+``` bash 
+git clone https://github.com/TianYu-00/fe-nc-news.git
+cd fe-nc-news
+```
+
+#### 2. Install dependencies
+``` bash 
+npm install
+```
+> [!NOTE]
+Check the `package.json` file to see the list of dependencies being used, and install any missing ones accordingly.
+
+
+
+#### 3. Run the dev environment
+``` bash 
+npm run dev
+```
+> [!NOTE]
+This project uses [nc-news api](https://nc-portfolio-1.onrender.com/api) which is hosted on render, so it may spin down with inactivity, therefore it could take some time to start up (50+ seconds).
+
+
+
+
+
+
+
+
+
+
+## Links
+
+[Backend Repo](https://github.com/TianYu-00/nc-portfolio-1) 
+
+[API](https://nc-portfolio-1.onrender.com/api)
+
+[Frontend Web Application](https://fe-nc-news-tian.netlify.app/home)
+
+[Hosting Instruction](https://github.com/TianYu-00/fe-nc-news/blob/a8a03aea4205d2c47716144653607429b90e198b/hosting_instruction.md)
+
+<!-- https://l2c.northcoders.com/courses/fe/fe-nc-news -->
+
+<!-- https://notes.northcoders.com/courses/js-front-end/hosting -->
+
+<!--
 ## Project Redeployment
 Create an updated build version of your code:
 ``` 
@@ -25,6 +79,7 @@ Deploy to your production url:
 netlify deploy --prod
 ./dist
 ```
+-->
 
 <!-- 
 Task 1 - CORE: Create a React project and a public repo ✅ Submitted PR ✅
@@ -55,3 +110,7 @@ Task 13 - CORE: Deploy app ✅ Submitted PR ✅
 
 Task 14 - CORE: Write a README 
 -->
+
+
+## 
+This portfolio project was created as part of a Digital Skills Bootcamp in Software Engineering provided by [Northcoders](https://northcoders.com/)
