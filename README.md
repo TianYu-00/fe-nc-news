@@ -8,6 +8,39 @@ This project involves creating Northcoders News - a social news aggregation, web
 <!-- ![image](IMAGE URL HERE) -->
 </div>
 
+## Prerequisites
+- [Node.js (v21.7.2)](https://nodejs.org)
+
+
+## Setup instructions
+#### 1. Clone the repository
+``` bash 
+git clone https://github.com/TianYu-00/fe-nc-news.git
+cd fe-nc-news
+```
+
+#### 2. Install dependencies
+``` bash 
+npm install
+```
+> [!NOTE]
+Check the `package.json` file to see the list of dependencies being used, and install any missing ones accordingly.
+
+
+
+#### 3. Run the dev environment
+``` bash 
+npm run dev
+```
+
+
+
+
+
+
+
+
+
 
 ## Links
 https://nc-portfolio-1.onrender.com/api
