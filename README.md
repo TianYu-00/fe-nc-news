@@ -17,6 +17,7 @@ This project involves creating Northcoders News - a social news aggregation, web
 ``` bash 
 git clone https://github.com/TianYu-00/fe-nc-news.git
 cd fe-nc-news
+code .
 ```
 
 #### 2. Install dependencies
@@ -32,6 +33,8 @@ Check the `package.json` file to see the list of dependencies being used, and in
 ``` bash 
 npm run dev
 ```
+> [!NOTE]
+This project uses [nc-news api](https://nc-portfolio-1.onrender.com/api) which is hosted on render, so it may spin down with inactivity, therefore it could take some time to start up (50+ seconds).
 
 
 
@@ -44,6 +47,8 @@ npm run dev
 
 ## Links
 https://nc-portfolio-1.onrender.com/api
+> [!NOTE]
+This project uses the free plan, which may spin down with inactivity, so it could take some time to start up (50+ seconds).
 
 https://l2c.northcoders.com/courses/fe/fe-nc-news
 
