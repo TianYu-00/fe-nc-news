@@ -13,20 +13,28 @@ import { styled } from "@mui/material/styles";
 import Paper from "@mui/material/Paper";
 import Stack from "@mui/material/Stack";
 import { Link } from "react-router-dom";
+import ButtonGroup from "@mui/material/ButtonGroup";
+import Button from "@mui/material/Button";
 
 export default function Topic_Articles() {
+  const [searchParams, setSearchParams] = useSearchParams();
   const [articles, setAllArticles] = useState([]);
   const [isArticleLoading, setIsArticleLoading] = useState(false);
   const [allTopics, setAllTopics] = useState([]);
   const [selectedTopic, setSelectedTopic] = useState("none");
   const [articlesShowing, setArticlesShowing] = useState([]);
-  const [sortBy, setSortBy] = useState("");
-  const [searchParams, setSearchParams] = useSearchParams();
+  const [selectedSortBy, setSelectedSortBy] = useState("");
+  const [selectedSortByOrder, setSelectedSortByOrder] = useState("DESC");
+  // Allowed SortBy["", "created_at", "title", "votes", "author", "comment_count"]
 
   useEffect(() => {
     // Check url once
     const topicFromUrl = searchParams.get("topic") || "none";
     setSelectedTopic(topicFromUrl);
+    const sortByFromUrl = searchParams.get("sort_by") || "";
+    setSelectedSortBy(sortByFromUrl);
+    const sortByOrderFromUrl = searchParams.get("order") || "DESC";
+    setSelectedSortByOrder(sortByOrderFromUrl);
     // Fetch topics once
     fetchTopics().then((topics) => {
       setAllTopics(topics);
@@ -36,7 +44,7 @@ export default function Topic_Articles() {
   useEffect(() => {
     if (!isArticleLoading) {
       setIsArticleLoading(true);
-      fetchArticles().then((articles) => {
+      fetchArticles(selectedSortBy, selectedSortByOrder).then((articles) => {
         setAllArticles(articles);
         if (selectedTopic === "none") {
           setArticlesShowing(articles);
@@ -47,24 +55,43 @@ export default function Topic_Articles() {
         setIsArticleLoading(false);
       });
     }
-  }, [selectedTopic]);
+  }, [selectedTopic, selectedSortBy, selectedSortByOrder]);
 
   if (isArticleLoading) {
     return <p>Loading Content...</p>;
   }
 
   function onChangeHandle_topicChange(event) {
+    const newSearchParams = new URLSearchParams(searchParams);
+    newSearchParams.set("topic", event.target.value);
+    setSearchParams(newSearchParams);
     setSelectedTopic(event.target.value);
-    setSearchParams({ topic: event.target.value });
   }
 
+  function onChangeHandle_sortByChange(event) {
+    // https://developer.mozilla.org/en-US/docs/Web/API/URLSearchParams
+    const newSearchParams = new URLSearchParams(searchParams);
+    newSearchParams.set("sort_by", event.target.value);
+    setSearchParams(newSearchParams);
+    setSelectedSortBy(event.target.value);
+  }
+
+  function onClickHandle_sortByOrderChange(order) {
+    const newSearchParams = new URLSearchParams(searchParams);
+    newSearchParams.set("order", order);
+    setSearchParams(newSearchParams);
+    setSelectedSortByOrder(order);
+  }
+
+  // console.log(searchParams);
   return (
     <div>
       <h1>Topic Articles </h1>
       {/* Select */}
       <Box sx={{ minWidth: 120, marginBottom: "20px", padding: "10px" }}>
-        <Grid container spacing={2}>
-          <Grid xs={8}>
+        {/* Main container */}
+        <Grid container spacing={2} wrap="nowrap">
+          <Grid xs={6}>
             <FormControl fullWidth>
               <InputLabel id="id_select_topic">Topics</InputLabel>
               <Select
@@ -84,13 +111,51 @@ export default function Topic_Articles() {
             </FormControl>
           </Grid>
 
-          <Grid xs={4}>
-            <FormControl fullWidth>
-              <InputLabel id="id_select_sortBy">Sort By</InputLabel>
-              <Select labelId="id_select_sortBy" id="sortBy-select" label="Sort By">
-                <MenuItem value="none">None</MenuItem>
-              </Select>
-            </FormControl>
+          <Grid xs>
+            <Grid container spacing={0} alignItems="center">
+              <Grid xs>
+                <FormControl fullWidth>
+                  <InputLabel id="id_select_sortBy">Sort By</InputLabel>
+                  <Select
+                    labelId="id_select_sortBy"
+                    id="sortBy-select"
+                    label="Sort By"
+                    value={selectedSortBy}
+                    onChange={onChangeHandle_sortByChange}
+                  >
+                    {/* Allowed SortBy["", "created_at", "title", "votes", "author", "comment_count"] */}
+                    <MenuItem value="">None</MenuItem>
+                    <MenuItem value="created_at">Date</MenuItem>
+                    <MenuItem value="title">Title</MenuItem>
+                    <MenuItem value="votes">Votes</MenuItem>
+                    <MenuItem value="author">Author</MenuItem>
+                    <MenuItem value="comment_count">Comment Count</MenuItem>
+                  </Select>
+                </FormControl>
+              </Grid>
+              <Grid>
+                <ButtonGroup orientation="vertical" aria-label="Vertical button group">
+                  <Button
+                    key="asc"
+                    size="small"
+                    onClick={() => {
+                      onClickHandle_sortByOrderChange("ASC");
+                    }}
+                  >
+                    ↑
+                  </Button>
+                  <Button
+                    key="desc"
+                    size="small"
+                    onClick={() => {
+                      onClickHandle_sortByOrderChange("DESC");
+                    }}
+                  >
+                    ↓
+                  </Button>
+                </ButtonGroup>
+              </Grid>
+            </Grid>
           </Grid>
         </Grid>
       </Box>

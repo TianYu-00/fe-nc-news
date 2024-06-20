@@ -4,11 +4,18 @@ const api = axios.create({
   baseURL: "https://nc-portfolio-1.onrender.com/api",
 });
 
-export const fetchArticles = () => {
-  return api.get("/articles").then((response) => {
-    // console.log(response);
-    return response.data;
-  });
+export const fetchArticles = (sortBy, sortByOrder) => {
+  return api
+    .get("/articles", {
+      params: {
+        sort_by: sortBy,
+        order: sortByOrder,
+      },
+    })
+    .then((response) => {
+      // console.log(response);
+      return response.data;
+    });
 };
 
 export const fetchArticle = (articleID) => {
