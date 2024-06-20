@@ -48,14 +48,18 @@ This project uses [nc-news api](https://nc-portfolio-1.onrender.com/api) which i
 
 
 ## Links
-https://nc-portfolio-1.onrender.com/api
 
-https://l2c.northcoders.com/courses/fe/fe-nc-news
+[Backend Repo](https://github.com/TianYu-00/nc-portfolio-1) 
 
-https://notes.northcoders.com/courses/js-front-end/hosting
+[API](https://nc-portfolio-1.onrender.com/api)
 
-https://fe-nc-news-tian.netlify.app/home
+[Frontend Web Application](https://fe-nc-news-tian.netlify.app/home)
 
+[Hosting Instruction](https://github.com/TianYu-00/fe-nc-news/blob/a8a03aea4205d2c47716144653607429b90e198b/hosting_instruction.md)
+
+<!-- https://l2c.northcoders.com/courses/fe/fe-nc-news -->
+
+<!-- https://notes.northcoders.com/courses/js-front-end/hosting -->
 
 ## Project Redeployment
 Create an updated build version of your code:
