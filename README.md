@@ -27,7 +27,7 @@ Task 10 - CORE: View a separate page for each topic with a list of related artic
 
 Task 11 - CORE: Sort articles ✅ Submitted PR ✅
 
-Task 12 - CORE: Error handling
+Task 12 - CORE: Error handling ✅ Submitted PR ✅
 
 Task 13 - CORE: Deploy app
 
