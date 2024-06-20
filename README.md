@@ -4,6 +4,28 @@ https://nc-portfolio-1.onrender.com/api
 
 https://l2c.northcoders.com/courses/fe/fe-nc-news
 
+https://notes.northcoders.com/courses/js-front-end/hosting
+
+https://fe-nc-news-tian.netlify.app/home
+
+
+## Project Redeployment
+Create an updated build version of your code:
+``` 
+npm run build
+```
+
+Deploy to a draft url
+```
+netlify deploy
+./dist
+```
+Deploy to your production url:
+```
+netlify deploy --prod
+./dist
+```
+
 <!-- 
 Task 1 - CORE: Create a React project and a public repo ✅ Submitted PR ✅
 
