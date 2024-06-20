@@ -10,6 +10,7 @@ import Home from "./components/Home/Home";
 import Login from "./components/Login/Login";
 import Topic_Articles from "./components/Topic_Articles/Topic_Articles";
 import Article from "./components/Article/Article";
+import WildCardPath from "./components/WildCardPath/WildCardPath";
 
 function App() {
   return (
@@ -23,6 +24,7 @@ function App() {
             <Route path="/login" element={<Login />} />
             <Route path="/topic_articles" element={<Topic_Articles />} />
             <Route path="/article/:article_id" element={<Article />} />
+            <Route path="*" element={<WildCardPath />} />
           </Routes>
         </UserLoginProvider>
       </BrowserRouter>

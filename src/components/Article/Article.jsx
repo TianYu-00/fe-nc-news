@@ -45,6 +45,12 @@ export default function Article() {
   let articleDate = new Date(article.created_at).toUTCString();
 
   function onClickHandle_vote(value) {
+    //Fake it
+    const originalVote = currentVote;
+    const fakeVote = currentVote + value;
+    setCurrentVote(fakeVote);
+
+    //Make it
     patchArticle(article_id, value)
       .then((updatedArticle) => {
         setCurrentVote(updatedArticle.votes);
@@ -52,6 +58,7 @@ export default function Article() {
         setTimeout(() => setVoteSuccessAlertVisible(false), 2500);
       })
       .catch((error) => {
+        setCurrentVote(originalVote);
         setVoteErrorMessage(error.message || "An error occurred");
         setVoteErrorAlertVisible(true);
         setTimeout(() => setVoteErrorAlertVisible(false), 2500);
