@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
-import { fetchArticles } from "../../api";
+import { fetchArticles, fetchTopics } from "../../api";
+import { useSearchParams } from "react-router-dom";
 
 //MUI
 import Box from "@mui/material/Box";
@@ -17,36 +18,68 @@ export default function Topic_Articles() {
   const [articles, setAllArticles] = useState([]);
   const [isArticleLoading, setIsArticleLoading] = useState(false);
   const [allTopics, setAllTopics] = useState([]);
-  const [selectedTopic, setSelectedTopic] = useState("");
+  const [selectedTopic, setSelectedTopic] = useState("none");
   const [articlesShowing, setArticlesShowing] = useState([]);
-  const [selectedArticle, setSelectedArticle] = useState([]);
   const [sortBy, setSortBy] = useState("");
+  const [searchParams, setSearchParams] = useSearchParams();
+
+  useEffect(() => {
+    // Check url once
+    const topicFromUrl = searchParams.get("topic") || "none";
+    setSelectedTopic(topicFromUrl);
+    // Fetch topics once
+    fetchTopics().then((topics) => {
+      setAllTopics(topics);
+    });
+  }, []);
 
   useEffect(() => {
     if (!isArticleLoading) {
       setIsArticleLoading(true);
       fetchArticles().then((articles) => {
         setAllArticles(articles);
-        setArticlesShowing(articles);
+        if (selectedTopic === "none") {
+          setArticlesShowing(articles);
+        } else {
+          const tempFilteredArticle = articles.filter((article) => article.topic === selectedTopic);
+          setArticlesShowing(tempFilteredArticle);
+        }
         setIsArticleLoading(false);
       });
     }
-  }, []);
+  }, [selectedTopic]);
 
   if (isArticleLoading) {
     return <p>Loading Content...</p>;
   }
 
+  function onChangeHandle_topicChange(event) {
+    setSelectedTopic(event.target.value);
+    setSearchParams({ topic: event.target.value });
+  }
+
   return (
     <div>
       <h1>Topic Articles </h1>
-      <Box sx={{ minWidth: 120, border: "1px solid yellow", marginBottom: "20px" }}>
+      {/* Select */}
+      <Box sx={{ minWidth: 120, marginBottom: "20px", padding: "10px" }}>
         <Grid container spacing={2}>
           <Grid xs={8}>
             <FormControl fullWidth>
               <InputLabel id="id_select_topic">Topics</InputLabel>
-              <Select labelId="id_select_topic" id="topic-select" label="Topics">
-                <MenuItem>None</MenuItem>
+              <Select
+                labelId="id_select_topic"
+                id="topic-select"
+                label="Topics"
+                value={selectedTopic}
+                onChange={onChangeHandle_topicChange}
+              >
+                <MenuItem value="none">None</MenuItem>
+                {allTopics.map((topic) => (
+                  <MenuItem key={topic.slug} value={topic.slug}>
+                    {topic.slug}
+                  </MenuItem>
+                ))}
               </Select>
             </FormControl>
           </Grid>
@@ -54,13 +87,15 @@ export default function Topic_Articles() {
           <Grid xs={4}>
             <FormControl fullWidth>
               <InputLabel id="id_select_sortBy">Sort By</InputLabel>
-              <Select labelId="id_select_sortBy" id="sortBy-select" label="SortBy">
-                <MenuItem>None</MenuItem>
+              <Select labelId="id_select_sortBy" id="sortBy-select" label="Sort By">
+                <MenuItem value="none">None</MenuItem>
               </Select>
             </FormControl>
           </Grid>
         </Grid>
       </Box>
+
+      {/* Articles Below */}
       <Box sx={{ minWidth: 120, border: "1px solid red", width: "100%" }}>
         <Stack spacing={2}>
           {articlesShowing.map((article, index) => {
