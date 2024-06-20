@@ -11,18 +11,18 @@ export default function Header() {
   return (
     <>
       <h1>NC News</h1>
-      <Grid container spacing={0} sx={{ justifyContent: "center" }} xs>
-        <Grid sx={{ margin: "5px" }}>
+      <Grid container sx={{ alignItems: "center", justifyContent: "center" }} xs>
+        <Grid className="navLinkGrid">
           <Link to="/home" className="noDecoLink">
             Home
           </Link>
         </Grid>
-        <Grid sx={{ margin: "5px" }}>
+        <Grid className="navLinkGrid">
           <Link to="/login" className="noDecoLink">
             Login
           </Link>
         </Grid>
-        <Grid sx={{ margin: "5px" }}>
+        <Grid className="navLinkGrid">
           <Link to="/topic_articles" className="noDecoLink">
             Articles
           </Link>
@@ -34,7 +34,7 @@ export default function Header() {
           }}
         >
           {/* https://placehold.co/ */}
-          <Avatar alt={"place holder"} src={user ? user.avatar_url : null} sx={{ width: 27, height: 27 }} />
+          <Avatar alt={"place holder"} src={user ? user.avatar_url : null} sx={{ width: 35, height: 35 }} />
         </Grid>
       </Grid>
     </>
