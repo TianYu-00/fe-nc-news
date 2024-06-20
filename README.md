@@ -19,7 +19,6 @@ https://fe-nc-news-tian.netlify.app/home
 ``` bash 
 git clone https://github.com/TianYu-00/fe-nc-news.git
 cd fe-nc-news
-code .
 ```
 
 #### 2. Install dependencies
