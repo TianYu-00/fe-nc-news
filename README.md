@@ -5,9 +5,11 @@ This project involves creating Northcoders News - a social news aggregation, web
 [![madewithlove](https://img.shields.io/badge/made_with-❤-red?style=for-the-badge&labelColor=orange
 )](https://github.com/Tianyu-00)
 
+[Prerequisites](https://github.com/TianYu-00/fe-nc-news/tree/task14-core-write-a-readme?tab=readme-ov-file#prerequisites) | [Setup Instruction](https://github.com/TianYu-00/fe-nc-news/tree/task14-core-write-a-readme?tab=readme-ov-file#prerequisites) | [Links](https://github.com/TianYu-00/fe-nc-news/tree/task14-core-write-a-readme?tab=readme-ov-file#links)
+
+![image](https://github.com/TianYu-00/fe-nc-news/assets/66271788/edd6df01-82d6-40cf-b13c-c370ae3058ff) <!-- Place Holder Image -->
 https://fe-nc-news-tian.netlify.app/home
 
-<!-- ![image](IMAGE URL HERE) -->
 </div>
 
 ## Prerequisites
