@@ -23,7 +23,7 @@ Task 8 - CORE: Post a new comment to an existing article ✅ Submitted PR ✅
 
 Task 9 - CORE: Delete comments ✅ Submitted PR ✅
 
-Task 10 - CORE: View a separate page for each topic with a list of related articles
+Task 10 - CORE: View a separate page for each topic with a list of related articles ✅ Submitted PR ✅
 
 Task 11 - CORE: Sort articles
 
