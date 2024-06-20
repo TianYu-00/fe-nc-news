@@ -60,6 +60,7 @@ This project uses [nc-news api](https://nc-portfolio-1.onrender.com/api) which i
 
 <!-- https://notes.northcoders.com/courses/js-front-end/hosting -->
 
+<!--
 ## Project Redeployment
 Create an updated build version of your code:
 ``` 
@@ -76,6 +77,7 @@ Deploy to your production url:
 netlify deploy --prod
 ./dist
 ```
+-->
 
 <!-- 
 Task 1 - CORE: Create a React project and a public repo ✅ Submitted PR ✅
