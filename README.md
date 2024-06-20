@@ -25,7 +25,7 @@ Task 9 - CORE: Delete comments ✅ Submitted PR ✅
 
 Task 10 - CORE: View a separate page for each topic with a list of related articles ✅ Submitted PR ✅
 
-Task 11 - CORE: Sort articles
+Task 11 - CORE: Sort articles ✅
 
 Task 12 - CORE: Error handling
 
