@@ -5,6 +5,8 @@ This project involves creating Northcoders News - a social news aggregation, web
 [![madewithlove](https://img.shields.io/badge/made_with-❤-red?style=for-the-badge&labelColor=orange
 )](https://github.com/Tianyu-00)
 
+https://fe-nc-news-tian.netlify.app/home
+
 <!-- ![image](IMAGE URL HERE) -->
 </div>
 
@@ -47,8 +49,6 @@ This project uses [nc-news api](https://nc-portfolio-1.onrender.com/api) which i
 
 ## Links
 https://nc-portfolio-1.onrender.com/api
-> [!NOTE]
-This project uses the free plan, which may spin down with inactivity, so it could take some time to start up (50+ seconds).
 
 https://l2c.northcoders.com/courses/fe/fe-nc-news
 
