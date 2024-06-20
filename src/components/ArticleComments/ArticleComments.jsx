@@ -11,11 +11,12 @@ import ArrowDownwardIcon from "@mui/icons-material/ArrowDownward";
 import TextField from "@mui/material/TextField";
 import Grid from "@mui/material/Unstable_Grid2";
 import Button from "@mui/material/Button";
-import Skeleton from "@mui/material/Skeleton";
 import Avatar from "@mui/material/Avatar";
 import Alert from "@mui/material/Alert";
 import { Link } from "react-router-dom";
 import DeleteIcon from "@mui/icons-material/Delete";
+import Snackbar from "@mui/material/Snackbar";
+import CloseIcon from "@mui/icons-material/Close";
 
 export default function ArticleComments({ articleId }) {
   const [isCommentShowing, setIsCommentShowing] = useState(false);
@@ -24,16 +25,16 @@ export default function ArticleComments({ articleId }) {
   const [isCommentLoading, setIsCommentLoading] = useState(false);
   const [allUsers, setAllUsers] = useState([]);
   const [newComment, setNewComment] = useState("");
-
   const { isLogin, user } = useContext(LoginContext);
   const [isNeedLoginVisible, setIsNeedLoginVisible] = useState(false);
   const [isEmptyCommentVisible, setIsEmptyCommentVisible] = useState(false);
   const [isSendCommentSuccessful, setIsSendCommentSuccessful] = useState(false);
   const [isSendUnsuccessful, setIsSendUnsuccessful] = useState(false);
-
+  // const [isDeleteCommentSuccessful, setIsDeleteCommentSuccessful] = useState(false);
   const textFieldRef = useRef(null);
-
   const [isSendingComment, setIsSendingComment] = useState(false);
+  const [open, setOpen] = React.useState(false);
+  const [alertMessage, setAlertMessage] = useState("");
 
   useEffect(() => {
     fetchUsers().then((users) => {
@@ -89,6 +90,7 @@ export default function ArticleComments({ articleId }) {
           .catch((error) => {
             setIsSendUnsuccessful(true);
             setIsSendingComment(false);
+            setCommentsShowing(allComments);
             setTimeout(() => setIsSendUnsuccessful(false), 2500);
           });
       } else {
@@ -102,15 +104,37 @@ export default function ArticleComments({ articleId }) {
   }
 
   function onClickHandle_deleteComment(commentID) {
-    console.log("Clicked Delete");
+    // console.log("Clicked Delete");
+    // setIsDeleteCommentSuccessful(true);
+    setCommentsShowing((prevComments) => prevComments.filter((comment) => comment.comment_id !== commentID));
     deleteCommentById(commentID)
       .then(() => {
-        setCommentsShowing((prevComments) => prevComments.filter((comment) => comment.comment_id !== commentID));
+        setAlertMessage("Comment deleted successfully");
+        setOpen(true);
+        setAllComments((prevComments) => prevComments.filter((comment) => comment.comment_id !== commentID));
       })
       .catch((error) => {
-        console.log("delete comment error");
+        setAlertMessage("Server failed to delete comment");
+        setOpen(true);
+        // setIsDeleteCommentSuccessful(false);
+        setCommentsShowing(allComments);
       });
   }
+
+  const handleClose = (event, reason) => {
+    if (reason === "clickaway") {
+      return;
+    }
+    setOpen(false);
+  };
+
+  const action = (
+    <React.Fragment>
+      <IconButton size="small" aria-label="close" color="inherit" onClick={handleClose}>
+        <CloseIcon fontSize="small" />
+      </IconButton>
+    </React.Fragment>
+  );
 
   return (
     <Accordion>
@@ -143,17 +167,22 @@ export default function ArticleComments({ articleId }) {
               multiline
               rows={2}
               inputRef={textFieldRef}
-              onBlur={() => {
+              onBlur={(event) => {
                 setNewComment(event.target.value);
               }}
             />
           </Grid>
           <Grid xs={12} container sx={{ marginTop: "10px" }} justifyContent="flex-end">
-            {!isSendingComment ? (
-              <Button variant="contained" color="success" onClick={onClickHandle_sendNewComment}>
+            {
+              <Button
+                variant="contained"
+                color="success"
+                onClick={onClickHandle_sendNewComment}
+                disabled={isSendingComment}
+              >
                 Send
               </Button>
-            ) : null}
+            }
           </Grid>
         </Grid>
 
@@ -201,28 +230,27 @@ export default function ArticleComments({ articleId }) {
                     <ThumbUpIcon fontSize="small" />
                     {comment.votes}
                   </IconButton>
+
                   <Grid sx={{ display: "flex", alignItems: "center", marginLeft: "10px" }}>{commentDate}</Grid>
 
-                  {isRealComment && comment.author === user.username ? (
+                  {comment.author === user.username ? (
                     <IconButton
                       aria-label="delete"
+                      disabled={!isRealComment}
                       onClick={() => {
                         onClickHandle_deleteComment(comment.comment_id);
                       }}
                     >
                       <DeleteIcon fontSize="small" />
                     </IconButton>
-                  ) : (
-                    <IconButton aria-label="delete" disabled title="Cannot delete fake comment">
-                      <DeleteIcon fontSize="small" />
-                    </IconButton>
-                  )}
+                  ) : null}
                 </Grid>
               </Grid>
             </React.Fragment>
           );
         })}
       </AccordionDetails>
+      <Snackbar open={open} autoHideDuration={2500} onClose={handleClose} message={alertMessage} action={action} />
     </Accordion>
   );
 }
