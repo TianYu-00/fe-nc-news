@@ -51,7 +51,7 @@ Task 11 - CORE: Sort articles ✅ Submitted PR ✅
 
 Task 12 - CORE: Error handling ✅ Submitted PR ✅
 
-Task 13 - CORE: Deploy app
+Task 13 - CORE: Deploy app ✅ Submitted PR ✅
 
 Task 14 - CORE: Write a README 
 -->
