@@ -41,6 +41,8 @@ export default function Login() {
         .finally(() => {
           setOnLoad(false);
         });
+    } else {
+      setOnLoad(false);
     }
   }, [isLogin]);
 

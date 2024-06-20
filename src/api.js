@@ -65,3 +65,14 @@ export const fetchUsers = () => {
       throw error;
     });
 };
+
+export const deleteCommentById = (commentID) => {
+  return api
+    .delete(`/comments/${commentID}`)
+    .then((response) => {
+      return response.data;
+    })
+    .catch((error) => {
+      throw error;
+    });
+};

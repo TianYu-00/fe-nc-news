@@ -1,5 +1,5 @@
-import React, { useState, useEffect, useContext } from "react";
-import { fetchCommentsOnArticle, fetchUsers, postCommentOnArticle } from "../../api";
+import React, { useState, useEffect, useContext, useRef } from "react";
+import { fetchCommentsOnArticle, fetchUsers, postCommentOnArticle, deleteCommentById } from "../../api";
 import { LoginContext } from "../UserLoginProvider/UserLoginProvider";
 import ThumbUpIcon from "@mui/icons-material/ThumbUp";
 import IconButton from "@mui/material/IconButton";
@@ -11,10 +11,12 @@ import ArrowDownwardIcon from "@mui/icons-material/ArrowDownward";
 import TextField from "@mui/material/TextField";
 import Grid from "@mui/material/Unstable_Grid2";
 import Button from "@mui/material/Button";
-import Skeleton from "@mui/material/Skeleton";
 import Avatar from "@mui/material/Avatar";
 import Alert from "@mui/material/Alert";
 import { Link } from "react-router-dom";
+import DeleteIcon from "@mui/icons-material/Delete";
+import Snackbar from "@mui/material/Snackbar";
+import CloseIcon from "@mui/icons-material/Close";
 
 export default function ArticleComments({ articleId }) {
   const [isCommentShowing, setIsCommentShowing] = useState(false);
@@ -23,12 +25,16 @@ export default function ArticleComments({ articleId }) {
   const [isCommentLoading, setIsCommentLoading] = useState(false);
   const [allUsers, setAllUsers] = useState([]);
   const [newComment, setNewComment] = useState("");
-
   const { isLogin, user } = useContext(LoginContext);
   const [isNeedLoginVisible, setIsNeedLoginVisible] = useState(false);
   const [isEmptyCommentVisible, setIsEmptyCommentVisible] = useState(false);
   const [isSendCommentSuccessful, setIsSendCommentSuccessful] = useState(false);
   const [isSendUnsuccessful, setIsSendUnsuccessful] = useState(false);
+  // const [isDeleteCommentSuccessful, setIsDeleteCommentSuccessful] = useState(false);
+  const textFieldRef = useRef(null);
+  const [isSendingComment, setIsSendingComment] = useState(false);
+  const [open, setOpen] = React.useState(false);
+  const [alertMessage, setAlertMessage] = useState("");
 
   useEffect(() => {
     fetchUsers().then((users) => {
@@ -53,10 +59,6 @@ export default function ArticleComments({ articleId }) {
     }
   }
 
-  function onChange_newComment(event) {
-    setNewComment(event.target.value);
-  }
-
   function onClickHandle_sendNewComment() {
     if (isLogin) {
       if (newComment !== "") {
@@ -69,7 +71,9 @@ export default function ArticleComments({ articleId }) {
           created_at: formattedDateTime,
           author: user.username,
           body: newComment,
+          isFake: true,
         };
+        setIsSendingComment(true);
 
         // Make it
         setCommentsShowing((oldComments) => [tempComment, ...oldComments]);
@@ -77,10 +81,16 @@ export default function ArticleComments({ articleId }) {
         postCommentOnArticle(articleId, newComment, user.username)
           .then((response) => {
             setNewComment("");
+            if (textFieldRef.current) {
+              textFieldRef.current.value = "";
+            }
+            setIsSendingComment(false);
             setTimeout(() => setIsSendCommentSuccessful(false), 2500);
           })
           .catch((error) => {
             setIsSendUnsuccessful(true);
+            setIsSendingComment(false);
+            setCommentsShowing(allComments);
             setTimeout(() => setIsSendUnsuccessful(false), 2500);
           });
       } else {
@@ -92,6 +102,39 @@ export default function ArticleComments({ articleId }) {
       setTimeout(() => setIsNeedLoginVisible(false), 2500);
     }
   }
+
+  function onClickHandle_deleteComment(commentID) {
+    // console.log("Clicked Delete");
+    // setIsDeleteCommentSuccessful(true);
+    setCommentsShowing((prevComments) => prevComments.filter((comment) => comment.comment_id !== commentID));
+    deleteCommentById(commentID)
+      .then(() => {
+        setAlertMessage("Comment deleted successfully");
+        setOpen(true);
+        setAllComments((prevComments) => prevComments.filter((comment) => comment.comment_id !== commentID));
+      })
+      .catch((error) => {
+        setAlertMessage("Server failed to delete comment");
+        setOpen(true);
+        // setIsDeleteCommentSuccessful(false);
+        setCommentsShowing(allComments);
+      });
+  }
+
+  const handleClose = (event, reason) => {
+    if (reason === "clickaway") {
+      return;
+    }
+    setOpen(false);
+  };
+
+  const action = (
+    <React.Fragment>
+      <IconButton size="small" aria-label="close" color="inherit" onClick={handleClose}>
+        <CloseIcon fontSize="small" />
+      </IconButton>
+    </React.Fragment>
+  );
 
   return (
     <Accordion>
@@ -123,18 +166,27 @@ export default function ArticleComments({ articleId }) {
               label="Comment"
               multiline
               rows={2}
-              value={newComment}
-              onChange={onChange_newComment}
+              inputRef={textFieldRef}
+              onBlur={(event) => {
+                setNewComment(event.target.value);
+              }}
             />
           </Grid>
           <Grid xs={12} container sx={{ marginTop: "10px" }} justifyContent="flex-end">
-            <Button variant="contained" color="success" onClick={onClickHandle_sendNewComment}>
-              Send
-            </Button>
+            {
+              <Button
+                variant="contained"
+                color="success"
+                onClick={onClickHandle_sendNewComment}
+                disabled={isSendingComment}
+              >
+                Send
+              </Button>
+            }
           </Grid>
         </Grid>
 
-        {isCommentLoading ? <Skeleton animation="wave" /> : <p />}
+        {isCommentLoading ? <p>Syncing Comments...</p> : <p />}
 
         {commentsShowing.map((comment, index) => {
           const commentDate = new Date(comment.created_at).toLocaleString("en-UK", {
@@ -147,6 +199,9 @@ export default function ArticleComments({ articleId }) {
             }
             return tempURL;
           }, "");
+
+          const isRealComment = !comment.isFake;
+
           return (
             <React.Fragment key={index}>
               <Grid container wrap="nowrap" sx={{ marginBottom: "20px", borderBottom: "1px solid grey" }}>
@@ -170,17 +225,32 @@ export default function ArticleComments({ articleId }) {
                   <Grid xs={12} sx={{}}>
                     {comment.body}
                   </Grid>
-                  <IconButton sx={{}} aria-label="upvotes">
+
+                  <IconButton sx={{}} aria-label="upvotes" disabled={!isRealComment}>
                     <ThumbUpIcon fontSize="small" />
                     {comment.votes}
                   </IconButton>
+
                   <Grid sx={{ display: "flex", alignItems: "center", marginLeft: "10px" }}>{commentDate}</Grid>
+
+                  {comment.author === user.username ? (
+                    <IconButton
+                      aria-label="delete"
+                      disabled={!isRealComment}
+                      onClick={() => {
+                        onClickHandle_deleteComment(comment.comment_id);
+                      }}
+                    >
+                      <DeleteIcon fontSize="small" />
+                    </IconButton>
+                  ) : null}
                 </Grid>
               </Grid>
             </React.Fragment>
           );
         })}
       </AccordionDetails>
+      <Snackbar open={open} autoHideDuration={2500} onClose={handleClose} message={alertMessage} action={action} />
     </Accordion>
   );
 }
