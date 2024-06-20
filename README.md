@@ -1,5 +1,15 @@
-# NC News Frontend
+<div align="center">
+<h1> NC News Frontend Web Application </h1> 
+This project involves creating Northcoders News - a social news aggregation, web content rating and discussion website. Northcoders News has articles which are divided into topics, and each article has user-curated ratings from upvotes and downvotes using the API. Users can also add comments about an article. <br><br>
+  
+[![madewithlove](https://img.shields.io/badge/made_with-❤-red?style=for-the-badge&labelColor=orange
+)](https://github.com/Tianyu-00)
 
+<!-- ![image](IMAGE URL HERE) -->
+</div>
+
+
+## Links
 https://nc-portfolio-1.onrender.com/api
 
 https://l2c.northcoders.com/courses/fe/fe-nc-news
