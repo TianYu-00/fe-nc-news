@@ -117,7 +117,15 @@ export default function Login() {
 
   if (onLoad) {
     return (
-      <Box sx={{ display: "flex", justifyContent: "center", alignItems: "center", height: "50vh" }}>
+      <Box
+        sx={{
+          display: "flex",
+          justifyContent: "center",
+          alignItems: "center",
+          height: "83vh",
+          backgroundColor: "#1A2027",
+        }}
+      >
         <CircularProgress />
       </Box>
     );

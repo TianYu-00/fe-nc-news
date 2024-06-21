@@ -10,6 +10,7 @@ import Box from "@mui/material/Box";
 import Typography from "@mui/material/Typography";
 import Grid from "@mui/material/Unstable_Grid2";
 import PersonIcon from "@mui/icons-material/Person";
+import CircularProgress from "@mui/material/CircularProgress";
 
 export default function Article() {
   const { article_id } = useParams();
@@ -42,7 +43,19 @@ export default function Article() {
   }
 
   if (!article) {
-    return <p>Loading Content...</p>;
+    return (
+      <Box
+        sx={{
+          display: "flex",
+          justifyContent: "center",
+          alignItems: "center",
+          height: "83vh",
+          backgroundColor: "#1A2027",
+        }}
+      >
+        <CircularProgress />
+      </Box>
+    );
   }
 
   let articleDate = new Date(article.created_at).toUTCString();

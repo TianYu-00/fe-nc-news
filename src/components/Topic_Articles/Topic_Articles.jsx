@@ -18,6 +18,7 @@ import Button from "@mui/material/Button";
 import Typography from "@mui/material/Typography";
 import PersonIcon from "@mui/icons-material/Person";
 import ArticleIcon from "@mui/icons-material/Article";
+import CircularProgress from "@mui/material/CircularProgress";
 
 export default function Topic_Articles() {
   const [searchParams, setSearchParams] = useSearchParams();
@@ -61,7 +62,19 @@ export default function Topic_Articles() {
   }, [selectedTopic, selectedSortBy, selectedSortByOrder]);
 
   if (isArticleLoading) {
-    return <p>Loading Content...</p>;
+    return (
+      <Box
+        sx={{
+          display: "flex",
+          justifyContent: "center",
+          alignItems: "center",
+          height: "83vh",
+          backgroundColor: "#1A2027",
+        }}
+      >
+        <CircularProgress />
+      </Box>
+    );
   }
 
   function onChangeHandle_topicChange(event) {
