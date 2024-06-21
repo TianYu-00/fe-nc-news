@@ -86,7 +86,7 @@ export const deleteCommentById = (commentID) => {
 
 export const patchComment = (commentID, value) => {
   return api
-    .patch(`/articles/comments/${commentID}`, {
+    .patch(`/comments/${commentID}`, {
       inc_votes: value,
     })
     .then((response) => {

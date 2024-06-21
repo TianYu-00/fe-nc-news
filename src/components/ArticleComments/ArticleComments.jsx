@@ -140,6 +140,31 @@ export default function ArticleComments({ articleId }) {
 
   function onClickHandle_vote(comment, value) {
     //Fake it
+    const originalCommentsShowing = [...commentsShowing];
+    setCommentsShowing((oldComments) => {
+      const updatedComments = oldComments.map((currentComment) => {
+        if (currentComment.comment_id === comment.comment_id) {
+          return {
+            ...currentComment,
+            votes: currentComment.votes + value,
+          };
+        }
+        return currentComment;
+      });
+      return updatedComments;
+    });
+
+    // Make it
+    patchComment(comment.comment_id, value)
+      .then((updatedComment) => {
+        setAlertMessage("Vote has been processed");
+        setOpen(true);
+      })
+      .catch((error) => {
+        setAlertMessage("Server failed to process vote");
+        setOpen(true);
+        setCommentsShowing(originalCommentsShowing);
+      });
   }
 
   return (
@@ -244,6 +269,7 @@ export default function ArticleComments({ articleId }) {
                     {comment.body}
                   </Grid>
 
+                  {/* LIKE DISLIKE BUTTON */}
                   <IconButton
                     sx={{}}
                     aria-label="upvotes"
@@ -265,9 +291,9 @@ export default function ArticleComments({ articleId }) {
                   >
                     <ThumbDownIcon fontSize="small" />
                   </IconButton>
+                  {/* LIKE DISLIKE BUTTON END */}
 
                   <Grid sx={{ display: "flex", alignItems: "center", marginLeft: "10px" }}>{commentDate}</Grid>
-
                   {comment.author === user.username ? (
                     <IconButton
                       aria-label="delete"
