@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import { fetchArticles, fetchTopics } from "../../api";
 import { useSearchParams } from "react-router-dom";
 
-//MUI
+// MUI
 import Box from "@mui/material/Box";
 import InputLabel from "@mui/material/InputLabel";
 import MenuItem from "@mui/material/MenuItem";
@@ -19,6 +19,7 @@ import Typography from "@mui/material/Typography";
 import PersonIcon from "@mui/icons-material/Person";
 import ArticleIcon from "@mui/icons-material/Article";
 import CircularProgress from "@mui/material/CircularProgress";
+import Pagination from "@mui/material/Pagination"; // https://next.mui.com/material-ui/react-pagination/
 
 export default function Topic_Articles() {
   const [searchParams, setSearchParams] = useSearchParams();
@@ -29,37 +30,49 @@ export default function Topic_Articles() {
   const [articlesShowing, setArticlesShowing] = useState([]);
   const [selectedSortBy, setSelectedSortBy] = useState("");
   const [selectedSortByOrder, setSelectedSortByOrder] = useState("DESC");
-  // Allowed SortBy["", "created_at", "title", "votes", "author", "comment_count"]
+  const [currentPage, setCurrentPage] = useState(1);
+  const maxArticlesPerPage = 5;
 
+  // Load Once
   useEffect(() => {
-    // Check url once
     const topicFromUrl = searchParams.get("topic") || "none";
     setSelectedTopic(topicFromUrl);
     const sortByFromUrl = searchParams.get("sort_by") || "";
     setSelectedSortBy(sortByFromUrl);
     const sortByOrderFromUrl = searchParams.get("order") || "DESC";
     setSelectedSortByOrder(sortByOrderFromUrl);
-    // Fetch topics once
     fetchTopics().then((topics) => {
       setAllTopics(topics);
     });
   }, []);
 
+  // Handle Article
   useEffect(() => {
     if (!isArticleLoading) {
       setIsArticleLoading(true);
       fetchArticles(selectedSortBy, selectedSortByOrder).then((articles) => {
         setAllArticles(articles);
         if (selectedTopic === "none") {
-          setArticlesShowing(articles);
+          setArticlesShowing(articles.slice(0, maxArticlesPerPage));
         } else {
           const tempFilteredArticle = articles.filter((article) => article.topic === selectedTopic);
-          setArticlesShowing(tempFilteredArticle);
+          setArticlesShowing(tempFilteredArticle.slice(0, maxArticlesPerPage));
         }
         setIsArticleLoading(false);
       });
     }
   }, [selectedTopic, selectedSortBy, selectedSortByOrder]);
+
+  // Handle Pagination
+  useEffect(() => {
+    const startIndex = (currentPage - 1) * maxArticlesPerPage;
+    const endIndex = startIndex + maxArticlesPerPage;
+    setArticlesShowing(articles.slice(startIndex, endIndex));
+  }, [articles, currentPage]);
+
+  const onChangeHandle_pageChange = (event, value) => {
+    setCurrentPage(value);
+  };
 
   if (isArticleLoading) {
     return (
@@ -82,14 +95,15 @@ export default function Topic_Articles() {
     newSearchParams.set("topic", event.target.value);
     setSearchParams(newSearchParams);
     setSelectedTopic(event.target.value);
+    setCurrentPage(1);
   }
 
   function onChangeHandle_sortByChange(event) {
-    // https://developer.mozilla.org/en-US/docs/Web/API/URLSearchParams
     const newSearchParams = new URLSearchParams(searchParams);
     newSearchParams.set("sort_by", event.target.value);
     setSearchParams(newSearchParams);
     setSelectedSortBy(event.target.value);
+    setCurrentPage(1);
   }
 
   function onClickHandle_sortByOrderChange(order) {
@@ -97,9 +111,9 @@ export default function Topic_Articles() {
     newSearchParams.set("order", order);
     setSearchParams(newSearchParams);
     setSelectedSortByOrder(order);
+    setCurrentPage(1);
   }
 
-  // console.log(searchParams);
   return (
     <div>
       <Box
@@ -241,6 +255,25 @@ export default function Topic_Articles() {
                 );
               })}
             </Stack>
+          </Box>
+
+          {/* Pagination */}
+          <Box
+            sx={{
+              display: "flex",
+              justifyContent: "center",
+              alignItems: "center",
+              marginTop: "20px",
+              paddingBottom: "20px",
+            }}
+          >
+            <Pagination
+              count={Math.ceil(articles.length / maxArticlesPerPage)}
+              page={currentPage}
+              variant="outlined"
+              onChange={onChangeHandle_pageChange}
+              color="primary"
+            />
           </Box>
         </Box>
       </Box>
