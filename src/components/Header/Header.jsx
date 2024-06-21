@@ -12,7 +12,7 @@ export default function Header() {
   useEffect(() => {}, []);
   return (
     <>
-      <Box sx={{ margin: "20px" }}>
+      <Box sx={{ backgroundColor: "#1A2027", margin: "0px 0px 20px 0px" }}>
         <Typography variant="h1" gutterBottom>
           NC News
         </Typography>
@@ -46,3 +46,10 @@ export default function Header() {
     </>
   );
 }
+
+// If the margin property has four values:
+// margin: 25px 50px 75px 100px;
+// top margin is 25px
+// right margin is 50px
+// bottom margin is 75px
+// left margin is 100px

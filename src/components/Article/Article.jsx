@@ -69,51 +69,61 @@ export default function Article() {
 
   return (
     <>
-      <Box sx={{ maxWidth: "1500px", margin: "0 auto" }}>
-        <h2>{article.title}</h2>
-        <img
-          src={article.article_img_url}
-          alt={article.title}
-          style={{ maxWidth: "1000px", width: "100%", objectFit: "cover" }}
-          loading="lazy"
-        />
-        <p>Author: {article.author}</p>
-        <p>{articleDate}</p>
-        <Box sx={{ padding: "25px" }}>
-          <p>{article.body}</p>
+      <Box
+        sx={{
+          width: "100%",
+          minHeight: "83vh",
+          backgroundColor: "#1A2027",
+        }}
+      >
+        <Box sx={{ maxWidth: "1500px", margin: "0 auto" }}>
+          <Typography variant="h4" sx={{ marginBottom: "20px" }}>
+            {article.title}
+          </Typography>
+          <img
+            src={article.article_img_url}
+            alt={article.title}
+            style={{ maxWidth: "1000px", width: "100%", objectFit: "cover" }}
+            loading="lazy"
+          />
+          <p>Author: {article.author}</p>
+          <p>{articleDate}</p>
+          <Box sx={{ padding: "25px" }}>
+            <p>{article.body}</p>
+          </Box>
+
+          {voteSuccessAlertVisible && (
+            <Alert severity="success" variant="outlined">
+              Vote went through successfully
+            </Alert>
+          )}
+          {voteErrorAlertVisible && (
+            <Alert severity="error" variant="outlined">
+              {voteErrorMessage}
+            </Alert>
+          )}
+          <IconButton
+            aria-label="article upvotes"
+            onClick={() => {
+              onClickHandle_vote(1);
+            }}
+          >
+            <ThumbUpIcon />
+          </IconButton>
+          {currentVote}
+          <IconButton
+            aria-label="article upvotes"
+            onClick={() => {
+              onClickHandle_vote(-1);
+            }}
+          >
+            <ThumbDownIcon />
+          </IconButton>
+
+          <Box sx={{ marginTop: "25px" }} />
+
+          <Comments articleId={article_id} />
         </Box>
-
-        {voteSuccessAlertVisible && (
-          <Alert severity="success" variant="outlined">
-            Vote went through successfully
-          </Alert>
-        )}
-        {voteErrorAlertVisible && (
-          <Alert severity="error" variant="outlined">
-            {voteErrorMessage}
-          </Alert>
-        )}
-        <IconButton
-          aria-label="article upvotes"
-          onClick={() => {
-            onClickHandle_vote(1);
-          }}
-        >
-          <ThumbUpIcon />
-        </IconButton>
-        {currentVote}
-        <IconButton
-          aria-label="article upvotes"
-          onClick={() => {
-            onClickHandle_vote(-1);
-          }}
-        >
-          <ThumbDownIcon />
-        </IconButton>
-
-        <Box sx={{ marginTop: "25px" }} />
-
-        <Comments articleId={article_id} />
       </Box>
     </>
   );
