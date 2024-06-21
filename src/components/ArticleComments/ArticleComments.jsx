@@ -228,8 +228,8 @@ export default function ArticleComments({ articleId }) {
 
                   <IconButton sx={{}} aria-label="upvotes" disabled={!isRealComment}>
                     <ThumbUpIcon fontSize="small" />
-                    {comment.votes}
                   </IconButton>
+                  <Grid sx={{ alignContent: "center" }}>{comment.votes}</Grid>
 
                   <Grid sx={{ display: "flex", alignItems: "center", marginLeft: "10px" }}>{commentDate}</Grid>
 
