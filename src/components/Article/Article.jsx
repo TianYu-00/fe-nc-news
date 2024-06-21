@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useContext } from "react";
 import { useParams } from "react-router-dom";
 import { fetchArticle, patchArticle } from "../../api";
 import ThumbUpIcon from "@mui/icons-material/ThumbUp";
@@ -11,15 +11,18 @@ import Typography from "@mui/material/Typography";
 import Grid from "@mui/material/Unstable_Grid2";
 import PersonIcon from "@mui/icons-material/Person";
 import CircularProgress from "@mui/material/CircularProgress";
+import Snackbar from "@mui/material/Snackbar";
+import CloseIcon from "@mui/icons-material/Close";
+import { LoginContext } from "../UserLoginProvider/UserLoginProvider";
 
 export default function Article() {
   const { article_id } = useParams();
   const [article, setArticle] = useState(null);
   const [isArticleLoading, setIsArticleLoading] = useState(true);
   const [currentVote, setCurrentVote] = useState(0);
-  const [voteSuccessAlertVisible, setVoteSuccessAlertVisible] = useState(false);
-  const [voteErrorAlertVisible, setVoteErrorAlertVisible] = useState(false);
-  const [voteErrorMessage, setVoteErrorMessage] = useState("");
+  const [alertMessage, setAlertMessage] = useState("");
+  const [open, setOpen] = useState(false);
+  const { isLogin, user } = useContext(LoginContext);
 
   useEffect(() => {
     if (!article) {
@@ -61,6 +64,18 @@ export default function Article() {
   let articleDate = new Date(article.created_at).toUTCString();
 
   function onClickHandle_vote(value) {
+    if (!isLogin) {
+      setAlertMessage("Please log in to vote.");
+      setOpen(true);
+      return;
+    }
+
+    if (article.author === user.username) {
+      setAlertMessage("Can not vote on your own article");
+      setOpen(true);
+      return;
+    }
+
     //Fake it
     const originalVote = currentVote;
     const fakeVote = currentVote + value;
@@ -69,17 +84,31 @@ export default function Article() {
     //Make it
     patchArticle(article_id, value)
       .then((updatedArticle) => {
+        setAlertMessage("Article vote has been processed");
+        setOpen(true);
         setCurrentVote(updatedArticle.votes);
-        setVoteSuccessAlertVisible(true);
-        setTimeout(() => setVoteSuccessAlertVisible(false), 2500);
       })
       .catch((error) => {
+        setAlertMessage("Server failed to process article vote");
+        setOpen(true);
         setCurrentVote(originalVote);
-        setVoteErrorMessage(error.message || "An error occurred");
-        setVoteErrorAlertVisible(true);
-        setTimeout(() => setVoteErrorAlertVisible(false), 2500);
       });
   }
+
+  const handleClose = (event, reason) => {
+    if (reason === "clickaway") {
+      return;
+    }
+    setOpen(false);
+  };
+
+  const action = (
+    <React.Fragment>
+      <IconButton size="small" aria-label="close" color="inherit" onClick={handleClose}>
+        <CloseIcon fontSize="small" />
+      </IconButton>
+    </React.Fragment>
+  );
 
   return (
     <>
@@ -110,16 +139,6 @@ export default function Article() {
             <Typography variant="body1">{article.body}</Typography>
           </Box>
 
-          {voteSuccessAlertVisible && (
-            <Alert severity="success" variant="outlined">
-              Vote went through successfully
-            </Alert>
-          )}
-          {voteErrorAlertVisible && (
-            <Alert severity="error" variant="outlined">
-              {voteErrorMessage}
-            </Alert>
-          )}
           <IconButton
             aria-label="article upvotes"
             onClick={() => {
@@ -142,6 +161,7 @@ export default function Article() {
 
           <Comments articleId={article_id} />
         </Box>
+        <Snackbar open={open} autoHideDuration={2500} onClose={handleClose} message={alertMessage} action={action} />
       </Box>
     </>
   );

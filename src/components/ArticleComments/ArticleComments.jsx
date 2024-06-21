@@ -139,6 +139,19 @@ export default function ArticleComments({ articleId }) {
   };
 
   function onClickHandle_vote(comment, value) {
+    // check login state
+    if (!isLogin) {
+      setAlertMessage("Please log in to vote.");
+      setOpen(true);
+      return;
+    }
+
+    if (comment.author === user.username) {
+      setAlertMessage("Can not vote your own comment");
+      setOpen(true);
+      return;
+    }
+
     //Fake it
     const originalCommentsShowing = [...commentsShowing];
     setCommentsShowing((oldComments) => {
@@ -157,11 +170,11 @@ export default function ArticleComments({ articleId }) {
     // Make it
     patchComment(comment.comment_id, value)
       .then((updatedComment) => {
-        setAlertMessage("Vote has been processed");
+        setAlertMessage("Comment vote has been processed");
         setOpen(true);
       })
       .catch((error) => {
-        setAlertMessage("Server failed to process vote");
+        setAlertMessage("Server failed to process comment vote");
         setOpen(true);
         setCommentsShowing(originalCommentsShowing);
       });
