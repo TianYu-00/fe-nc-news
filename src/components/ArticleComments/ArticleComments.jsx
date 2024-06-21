@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useContext, useRef } from "react";
-import { fetchCommentsOnArticle, fetchUsers, postCommentOnArticle, deleteCommentById } from "../../api";
+import { fetchCommentsOnArticle, fetchUsers, postCommentOnArticle, deleteCommentById, patchComment } from "../../api";
 import { LoginContext } from "../UserLoginProvider/UserLoginProvider";
 import ThumbUpIcon from "@mui/icons-material/ThumbUp";
 import IconButton from "@mui/material/IconButton";
@@ -17,6 +17,7 @@ import { Link, useNavigate } from "react-router-dom";
 import DeleteIcon from "@mui/icons-material/Delete";
 import Snackbar from "@mui/material/Snackbar";
 import CloseIcon from "@mui/icons-material/Close";
+import ThumbDownIcon from "@mui/icons-material/ThumbDown";
 
 export default function ArticleComments({ articleId }) {
   const [isCommentShowing, setIsCommentShowing] = useState(false);
@@ -137,6 +138,10 @@ export default function ArticleComments({ articleId }) {
     setCommentsShowing(allComments.slice(0, visibleCommentsCount + maxCommentsPerPage));
   };
 
+  function onClickHandle_vote(comment, value) {
+    //Fake it
+  }
+
   return (
     <Accordion>
       <AccordionSummary
@@ -239,10 +244,27 @@ export default function ArticleComments({ articleId }) {
                     {comment.body}
                   </Grid>
 
-                  <IconButton sx={{}} aria-label="upvotes" disabled={!isRealComment}>
+                  <IconButton
+                    sx={{}}
+                    aria-label="upvotes"
+                    disabled={!isRealComment}
+                    onClick={() => {
+                      onClickHandle_vote(comment, 1);
+                    }}
+                  >
                     <ThumbUpIcon fontSize="small" />
                   </IconButton>
                   <Grid sx={{ alignContent: "center" }}>{comment.votes}</Grid>
+                  <IconButton
+                    sx={{}}
+                    aria-label="downvote"
+                    disabled={!isRealComment}
+                    onClick={() => {
+                      onClickHandle_vote(comment, -1);
+                    }}
+                  >
+                    <ThumbDownIcon fontSize="small" />
+                  </IconButton>
 
                   <Grid sx={{ display: "flex", alignItems: "center", marginLeft: "10px" }}>{commentDate}</Grid>
 

@@ -84,6 +84,19 @@ export const deleteCommentById = (commentID) => {
     });
 };
 
+export const patchComment = (commentID, value) => {
+  return api
+    .patch(`/articles/comments/${commentID}`, {
+      inc_votes: value,
+    })
+    .then((response) => {
+      return response.data;
+    })
+    .catch((error) => {
+      throw error;
+    });
+};
+
 export const fetchTopics = () => {
   return api.get("/topics").then((response) => {
     return response.data;
