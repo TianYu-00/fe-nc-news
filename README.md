@@ -111,6 +111,16 @@ Task 13 - CORE: Deploy app ✅ Submitted PR ✅
 Task 14 - CORE: Write a README ✅ Submitted PR ✅
 -->
 
+<!--
+ADVANCED: General Styling ✅
+
+ADVANCED: Responsiveness
+
+ADVANCED: Accessibility
+
+ADVANCED: User Experience
+-->
+
 
 ## 
 This portfolio project was created as part of a Digital Skills Bootcamp in Software Engineering provided by [Northcoders](https://northcoders.com/)
