@@ -21,6 +21,9 @@ const theme = createTheme({
       secondary: "#b0bec5", // #b0bec5 Tower Gray
     },
   },
+  typography: {
+    fontFamily: "Dosis, Arial, sans-serif",
+  },
 });
 
 export default theme;

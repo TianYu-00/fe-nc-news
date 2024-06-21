@@ -5,6 +5,7 @@ import Avatar from "@mui/material/Avatar";
 import { LoginContext } from "../UserLoginProvider/UserLoginProvider";
 import "./header.css";
 import Box from "@mui/material/Box";
+import Typography from "@mui/material/Typography";
 
 export default function Header() {
   const { user } = useContext(LoginContext);
@@ -12,7 +13,9 @@ export default function Header() {
   return (
     <>
       <Box sx={{ margin: "20px" }}>
-        <h1>NC News</h1>
+        <Typography variant="h1" gutterBottom>
+          NC News
+        </Typography>
         <Grid container sx={{ alignItems: "center", justifyContent: "center" }} xs>
           <Grid className="navLinkGrid">
             <Link to="/home" className="noDecoLink">

@@ -1,8 +1,9 @@
+@import url("https://fonts.googleapis.com/css2?family=Dosis:wght@200..800&display=swap");
+
 #root {
   text-align: center;
 }
 
-h1,
-p {
-  text-decoration: none;
+body {
+  font-family: "Dosis", sans-serif;
 }
