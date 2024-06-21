@@ -115,11 +115,11 @@ Task 14 - CORE: Write a README ✅ Submitted PR ✅
 <!--
 ADVANCED: General Styling ✅
 
-ADVANCED: Responsiveness
+ADVANCED: Responsiveness ✅
 
-ADVANCED: Accessibility
+ADVANCED: Accessibility ✅
 
-ADVANCED: User Experience
+ADVANCED: User Experience ✅
 -->
 
 
