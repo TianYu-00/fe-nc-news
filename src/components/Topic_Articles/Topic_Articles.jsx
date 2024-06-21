@@ -19,7 +19,7 @@ import Typography from "@mui/material/Typography";
 import PersonIcon from "@mui/icons-material/Person";
 import ArticleIcon from "@mui/icons-material/Article";
 import CircularProgress from "@mui/material/CircularProgress";
-import Pagination from "@mui/material/Pagination"; // https://next.mui.com/material-ui/react-pagination/
+import Pagination from "@mui/material/Pagination";
 
 export default function Topic_Articles() {
   const [searchParams, setSearchParams] = useSearchParams();
@@ -32,6 +32,7 @@ export default function Topic_Articles() {
   const [selectedSortByOrder, setSelectedSortByOrder] = useState("DESC");
   const [currentPage, setCurrentPage] = useState(1);
   const maxArticlesPerPage = 5;
+  const [totalPageCount, setTotalPageCount] = useState(1);
 
   // Load Once
   useEffect(() => {
@@ -46,33 +47,37 @@ export default function Topic_Articles() {
     });
   }, []);
 
-  // Handle Article
+  // Fetch articles
   useEffect(() => {
     if (!isArticleLoading) {
       setIsArticleLoading(true);
       fetchArticles(selectedSortBy, selectedSortByOrder).then((articles) => {
         setAllArticles(articles);
-        if (selectedTopic === "none") {
-          setArticlesShowing(articles.slice(0, maxArticlesPerPage));
-        } else {
-          const tempFilteredArticle = articles.filter((article) => article.topic === selectedTopic);
-          setArticlesShowing(tempFilteredArticle.slice(0, maxArticlesPerPage));
-        }
+        applyFilters(articles, selectedTopic, currentPage);
         setIsArticleLoading(false);
       });
     }
   }, [selectedTopic, selectedSortBy, selectedSortByOrder]);
 
-  // Handle Pagination
+  // Handle pagination
   useEffect(() => {
-    const startIndex = (currentPage - 1) * maxArticlesPerPage;
-    const endIndex = startIndex + maxArticlesPerPage;
-    setArticlesShowing(articles.slice(startIndex, endIndex));
+    applyFilters(articles, selectedTopic, currentPage);
   }, [articles, currentPage]);
 
-  const onChangeHandle_pageChange = (event, value) => {
+  function applyFilters() {
+    let filteredArticles = articles;
+    if (selectedTopic !== "none") {
+      filteredArticles = articles.filter((article) => article.topic === selectedTopic);
+    }
+    setTotalPageCount(Math.ceil(filteredArticles.length / maxArticlesPerPage));
+    const startIndex = (currentPage - 1) * maxArticlesPerPage;
+    const endIndex = startIndex + maxArticlesPerPage;
+    setArticlesShowing(filteredArticles.slice(startIndex, endIndex));
+  }
+
+  function onChangeHandle_pageChange(event, value) {
     setCurrentPage(value);
-  };
+  }
 
   if (isArticleLoading) {
     return (
@@ -268,7 +273,7 @@ export default function Topic_Articles() {
             }}
           >
             <Pagination
-              count={Math.ceil(articles.length / maxArticlesPerPage)}
+              count={totalPageCount}
               page={currentPage}
               variant="outlined"
               onChange={onChangeHandle_pageChange}
