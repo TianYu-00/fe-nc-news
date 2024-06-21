@@ -125,20 +125,19 @@ export default function Login() {
 
   return (
     <>
-      <Grid
-        container
-        spacing={0}
+      <Box
         sx={{
           border: "1px solid white",
           justifyContent: "center",
           alignItems: "center",
-          marginTop: "10vh",
           borderRadius: "25px",
           backgroundColor: "#1A2027",
           paddingLeft: "30px",
           paddingRight: "30px",
+          margin: "0 auto",
+          marginTop: "10vh",
+          maxWidth: "500px",
         }}
-        xs
       >
         <Stack spacing={2} sx={{ margin: "50px" }}>
           <Grid container sx={{ justifyContent: "center", alignItems: "center" }}>
@@ -200,7 +199,7 @@ export default function Login() {
             />
           </Box>
         </Stack>
-      </Grid>
+      </Box>
     </>
   );
 }

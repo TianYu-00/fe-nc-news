@@ -87,121 +87,123 @@ export default function Topic_Articles() {
   // console.log(searchParams);
   return (
     <div>
-      <h2 style={{}}>Articles </h2>
-      {/* Select */}
-      <Box sx={{ minWidth: 120, marginBottom: "20px", padding: "10px" }}>
-        {/* Main container */}
-        <Grid container spacing={2} wrap="nowrap">
-          <Grid xs={6}>
-            <FormControl fullWidth>
-              <InputLabel id="id_select_topic">Topics</InputLabel>
-              <Select
-                labelId="id_select_topic"
-                id="topic-select"
-                label="Topics"
-                value={selectedTopic}
-                onChange={onChangeHandle_topicChange}
-              >
-                <MenuItem value="none">None</MenuItem>
-                {allTopics.map((topic) => (
-                  <MenuItem key={topic.slug} value={topic.slug}>
-                    {topic.slug}
-                  </MenuItem>
-                ))}
-              </Select>
-            </FormControl>
-          </Grid>
+      <Box sx={{ maxWidth: "1000px", justifyContent: "center", alignItems: "center", margin: "0 auto" }}>
+        <h2 style={{}}>Articles </h2>
+        {/* Select */}
+        <Box sx={{ minWidth: 120, marginBottom: "20px", padding: "10px" }}>
+          {/* Main container */}
+          <Grid container spacing={2} wrap="nowrap">
+            <Grid xs={6}>
+              <FormControl fullWidth>
+                <InputLabel id="id_select_topic">Topics</InputLabel>
+                <Select
+                  labelId="id_select_topic"
+                  id="topic-select"
+                  label="Topics"
+                  value={selectedTopic}
+                  onChange={onChangeHandle_topicChange}
+                >
+                  <MenuItem value="none">None</MenuItem>
+                  {allTopics.map((topic) => (
+                    <MenuItem key={topic.slug} value={topic.slug}>
+                      {topic.slug}
+                    </MenuItem>
+                  ))}
+                </Select>
+              </FormControl>
+            </Grid>
 
-          <Grid xs>
-            <Grid container spacing={0} alignItems="center">
-              <Grid xs>
-                <FormControl fullWidth>
-                  <InputLabel id="id_select_sortBy">Sort By</InputLabel>
-                  <Select
-                    labelId="id_select_sortBy"
-                    id="sortBy-select"
-                    label="Sort By"
-                    value={selectedSortBy}
-                    onChange={onChangeHandle_sortByChange}
-                  >
-                    {/* Allowed SortBy["", "created_at", "title", "votes", "author", "comment_count"] */}
-                    <MenuItem value="">None</MenuItem>
-                    <MenuItem value="created_at">Date</MenuItem>
-                    <MenuItem value="title">Title</MenuItem>
-                    <MenuItem value="votes">Votes</MenuItem>
-                    <MenuItem value="author">Author</MenuItem>
-                    <MenuItem value="comment_count">Comment Count</MenuItem>
-                  </Select>
-                </FormControl>
-              </Grid>
-              <Grid>
-                <ButtonGroup orientation="vertical" aria-label="Vertical button group">
-                  <Button
-                    key="asc"
-                    size="small"
-                    onClick={() => {
-                      onClickHandle_sortByOrderChange("ASC");
-                    }}
-                  >
-                    ↑
-                  </Button>
-                  <Button
-                    key="desc"
-                    size="small"
-                    onClick={() => {
-                      onClickHandle_sortByOrderChange("DESC");
-                    }}
-                  >
-                    ↓
-                  </Button>
-                </ButtonGroup>
+            <Grid xs>
+              <Grid container spacing={0} alignItems="center">
+                <Grid xs>
+                  <FormControl fullWidth>
+                    <InputLabel id="id_select_sortBy">Sort By</InputLabel>
+                    <Select
+                      labelId="id_select_sortBy"
+                      id="sortBy-select"
+                      label="Sort By"
+                      value={selectedSortBy}
+                      onChange={onChangeHandle_sortByChange}
+                    >
+                      {/* Allowed SortBy["", "created_at", "title", "votes", "author", "comment_count"] */}
+                      <MenuItem value="">None</MenuItem>
+                      <MenuItem value="created_at">Date</MenuItem>
+                      <MenuItem value="title">Title</MenuItem>
+                      <MenuItem value="votes">Votes</MenuItem>
+                      <MenuItem value="author">Author</MenuItem>
+                      <MenuItem value="comment_count">Comment Count</MenuItem>
+                    </Select>
+                  </FormControl>
+                </Grid>
+                <Grid>
+                  <ButtonGroup orientation="vertical" aria-label="Vertical button group">
+                    <Button
+                      key="asc"
+                      size="small"
+                      onClick={() => {
+                        onClickHandle_sortByOrderChange("ASC");
+                      }}
+                    >
+                      ↑
+                    </Button>
+                    <Button
+                      key="desc"
+                      size="small"
+                      onClick={() => {
+                        onClickHandle_sortByOrderChange("DESC");
+                      }}
+                    >
+                      ↓
+                    </Button>
+                  </ButtonGroup>
+                </Grid>
               </Grid>
             </Grid>
           </Grid>
-        </Grid>
-      </Box>
+        </Box>
 
-      {/* Articles Below */}
-      <Box sx={{ minWidth: 120, width: "100%" }}>
-        <Stack spacing={2}>
-          {articlesShowing.map((article, index) => {
-            let articleDate = new Date(article.created_at).toLocaleDateString("en-UK");
-            return (
-              <React.Fragment key={index}>
-                <Link to={`/article/${article.article_id}`} style={{ textDecoration: "none" }}>
-                  <Item sx={{ maxWidth: "750px" }}>
-                    <Grid container>
-                      <Grid xs={12} sm={6}>
-                        <img
-                          src={article.article_img_url}
-                          alt={article.title}
-                          style={{ width: "100%", objectFit: "cover" }}
-                          loading="lazy"
-                        />
+        {/* Articles Below */}
+        <Box sx={{ minWidth: 120, width: "100%" }}>
+          <Stack spacing={2} sx={{ justifyContent: "center", alignItems: "center", margin: "0 auto" }}>
+            {articlesShowing.map((article, index) => {
+              let articleDate = new Date(article.created_at).toLocaleDateString("en-UK");
+              return (
+                <React.Fragment key={index}>
+                  <Link to={`/article/${article.article_id}`} style={{ textDecoration: "none" }}>
+                    <Item sx={{ maxWidth: "750px" }}>
+                      <Grid container>
+                        <Grid xs={12} sm={6}>
+                          <img
+                            src={article.article_img_url}
+                            alt={article.title}
+                            style={{ width: "100%", objectFit: "cover" }}
+                            loading="lazy"
+                          />
+                        </Grid>
+                        <Grid xs={12} sm={6}>
+                          <Typography variant="h6" gutterBottom>
+                            {article.title}
+                          </Typography>
+                          <Typography variant="body1" gutterBottom>
+                            {article.author}
+                          </Typography>
+                          <Typography variant="body1" gutterBottom>
+                            Topic: {article.topic}
+                          </Typography>
+                        </Grid>
                       </Grid>
-                      <Grid xs={12} sm={6}>
-                        <Typography variant="h6" gutterBottom>
-                          {article.title}
-                        </Typography>
-                        <Typography variant="body1" gutterBottom>
-                          {article.author}
-                        </Typography>
-                        <Typography variant="body1" gutterBottom>
-                          Topic: {article.topic}
-                        </Typography>
+                      <Grid>
+                        <p style={{ fontSize: "0.75rem", textWrap: "nowrap" }}>
+                          Votes: {article.votes} | Comments: {article.comment_count} | Created At: {articleDate}
+                        </p>
                       </Grid>
-                    </Grid>
-                    <Grid>
-                      <p style={{ fontSize: "0.75rem", textWrap: "nowrap" }}>
-                        Votes: {article.votes} | Comments: {article.comment_count} | Created At: {articleDate}
-                      </p>
-                    </Grid>
-                  </Item>
-                </Link>
-              </React.Fragment>
-            );
-          })}
-        </Stack>
+                    </Item>
+                  </Link>
+                </React.Fragment>
+              );
+            })}
+          </Stack>
+        </Box>
       </Box>
     </div>
   );

@@ -1,10 +1,14 @@
 import React from "react";
+import Box from "@mui/material/Box";
+import { ReactTyped } from "react-typed"; // https://www.npmjs.com/package/react-typed
 
 export default function Home() {
   return (
     <>
-      <h2>Home </h2>
-      <p>Place Holder</p>
+      <Box sx={{ width: "100%", height: "100vh", backgroundColor: "#1A2027" }}>
+        <ReactTyped strings={["Welcome To Northcoders News"]} typeSpeed={100} backSpeed={50} loop />
+        <p>Not finished</p>
+      </Box>
     </>
   );
 }
