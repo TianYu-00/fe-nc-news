@@ -11,6 +11,7 @@ import Login from "./components/Login/Login";
 import Topic_Articles from "./components/Topic_Articles/Topic_Articles";
 import Article from "./components/Article/Article";
 import WildCardPath from "./components/WildCardPath/WildCardPath";
+import Footer from "./components/Footer/Footer";
 
 function App() {
   return (
@@ -26,6 +27,7 @@ function App() {
             <Route path="/article/:article_id" element={<Article />} />
             <Route path="*" element={<WildCardPath />} />
           </Routes>
+          <Footer />
         </UserLoginProvider>
       </BrowserRouter>
     </>

@@ -6,7 +6,11 @@ import ThumbDownIcon from "@mui/icons-material/ThumbDown";
 import IconButton from "@mui/material/IconButton";
 import Comments from "../ArticleComments/ArticleComments";
 import Alert from "@mui/material/Alert";
-import CheckIcon from "@mui/icons-material/Check";
+import Box from "@mui/material/Box";
+import Typography from "@mui/material/Typography";
+import Grid from "@mui/material/Unstable_Grid2";
+import PersonIcon from "@mui/icons-material/Person";
+import CircularProgress from "@mui/material/CircularProgress";
 
 export default function Article() {
   const { article_id } = useParams();
@@ -39,7 +43,19 @@ export default function Article() {
   }
 
   if (!article) {
-    return <p>Loading Content...</p>;
+    return (
+      <Box
+        sx={{
+          display: "flex",
+          justifyContent: "center",
+          alignItems: "center",
+          height: "83vh",
+          backgroundColor: "#1A2027",
+        }}
+      >
+        <CircularProgress />
+      </Box>
+    );
   }
 
   let articleDate = new Date(article.created_at).toUTCString();
@@ -67,45 +83,66 @@ export default function Article() {
 
   return (
     <>
-      <h2>{article.title}</h2>
-      <img
-        src={article.article_img_url}
-        alt={article.title}
-        style={{ width: "100%", objectFit: "cover" }}
-        loading="lazy"
-      />
-      <p>Author: {article.author}</p>
-      <p>{articleDate}</p>
-      <p>{article.body}</p>
-      {voteSuccessAlertVisible && (
-        <Alert severity="success" variant="outlined">
-          Vote went through successfully
-        </Alert>
-      )}
-      {voteErrorAlertVisible && (
-        <Alert severity="error" variant="outlined">
-          {voteErrorMessage}
-        </Alert>
-      )}
-      <IconButton
-        aria-label="article upvotes"
-        onClick={() => {
-          onClickHandle_vote(1);
+      <Box
+        sx={{
+          width: "100%",
+          minHeight: "83vh",
+          backgroundColor: "#1A2027",
         }}
       >
-        <ThumbUpIcon />
-      </IconButton>
-      {currentVote}
-      <IconButton
-        aria-label="article upvotes"
-        onClick={() => {
-          onClickHandle_vote(-1);
-        }}
-      >
-        <ThumbDownIcon />
-      </IconButton>
+        <Box sx={{ maxWidth: "1500px", margin: "0 auto" }}>
+          <Typography variant="h4" sx={{ marginBottom: "20px" }}>
+            {article.title}
+          </Typography>
+          <img
+            src={article.article_img_url}
+            alt={article.title}
+            style={{ maxWidth: "1000px", width: "100%", objectFit: "cover" }}
+            loading="lazy"
+          />
 
-      <Comments articleId={article_id} />
+          <Grid container sx={{ justifyContent: "center", alignItems: "center", marginBottom: "10px" }} wrap="nowrap">
+            <PersonIcon />
+            <Typography variant="h5">{article.author}</Typography>
+          </Grid>
+          <Typography variant="body2">{articleDate}</Typography>
+          <Box sx={{ padding: "25px" }}>
+            <Typography variant="body1">{article.body}</Typography>
+          </Box>
+
+          {voteSuccessAlertVisible && (
+            <Alert severity="success" variant="outlined">
+              Vote went through successfully
+            </Alert>
+          )}
+          {voteErrorAlertVisible && (
+            <Alert severity="error" variant="outlined">
+              {voteErrorMessage}
+            </Alert>
+          )}
+          <IconButton
+            aria-label="article upvotes"
+            onClick={() => {
+              onClickHandle_vote(1);
+            }}
+          >
+            <ThumbUpIcon />
+          </IconButton>
+          {currentVote}
+          <IconButton
+            aria-label="article upvotes"
+            onClick={() => {
+              onClickHandle_vote(-1);
+            }}
+          >
+            <ThumbDownIcon />
+          </IconButton>
+
+          <Box sx={{ marginTop: "25px" }} />
+
+          <Comments articleId={article_id} />
+        </Box>
+      </Box>
     </>
   );
 }
