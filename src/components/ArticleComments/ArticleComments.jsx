@@ -13,7 +13,7 @@ import Grid from "@mui/material/Unstable_Grid2";
 import Button from "@mui/material/Button";
 import Avatar from "@mui/material/Avatar";
 import Alert from "@mui/material/Alert";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import DeleteIcon from "@mui/icons-material/Delete";
 import Snackbar from "@mui/material/Snackbar";
 import CloseIcon from "@mui/icons-material/Close";
@@ -30,11 +30,13 @@ export default function ArticleComments({ articleId }) {
   const [isEmptyCommentVisible, setIsEmptyCommentVisible] = useState(false);
   const [isSendCommentSuccessful, setIsSendCommentSuccessful] = useState(false);
   const [isSendUnsuccessful, setIsSendUnsuccessful] = useState(false);
-  // const [isDeleteCommentSuccessful, setIsDeleteCommentSuccessful] = useState(false);
   const textFieldRef = useRef(null);
   const [isSendingComment, setIsSendingComment] = useState(false);
-  const [open, setOpen] = React.useState(false);
+  const [open, setOpen] = useState(false);
   const [alertMessage, setAlertMessage] = useState("");
+  const maxCommentsPerPage = 7;
+  const [visibleCommentsCount, setVisibleCommentsCount] = useState(maxCommentsPerPage);
+  const navigate = useNavigate();
 
   useEffect(() => {
     fetchUsers().then((users) => {
@@ -47,7 +49,7 @@ export default function ArticleComments({ articleId }) {
       setIsCommentLoading(true);
       fetchCommentsOnArticle(Number(articleId)).then((comments) => {
         setAllComments(comments);
-        setCommentsShowing(comments);
+        setCommentsShowing(comments.slice(0, maxCommentsPerPage));
         setIsCommentLoading(false);
       });
     }
@@ -62,7 +64,6 @@ export default function ArticleComments({ articleId }) {
   function onClickHandle_sendNewComment() {
     if (isLogin) {
       if (newComment !== "") {
-        // Fake it till you make it
         setIsSendCommentSuccessful(true);
         const tempTime = new Date();
         const formattedDateTime = tempTime.toISOString();
@@ -75,9 +76,7 @@ export default function ArticleComments({ articleId }) {
         };
         setIsSendingComment(true);
 
-        // Make it
         setCommentsShowing((oldComments) => [tempComment, ...oldComments]);
-        // Now post it to my db
         postCommentOnArticle(articleId, newComment, user.username)
           .then((response) => {
             setNewComment("");
@@ -104,8 +103,6 @@ export default function ArticleComments({ articleId }) {
   }
 
   function onClickHandle_deleteComment(commentID) {
-    // console.log("Clicked Delete");
-    // setIsDeleteCommentSuccessful(true);
     setCommentsShowing((prevComments) => prevComments.filter((comment) => comment.comment_id !== commentID));
     deleteCommentById(commentID)
       .then(() => {
@@ -116,7 +113,6 @@ export default function ArticleComments({ articleId }) {
       .catch((error) => {
         setAlertMessage("Server failed to delete comment");
         setOpen(true);
-        // setIsDeleteCommentSuccessful(false);
         setCommentsShowing(allComments);
       });
   }
@@ -136,6 +132,11 @@ export default function ArticleComments({ articleId }) {
     </React.Fragment>
   );
 
+  const onClickHandle_loadMore = () => {
+    setVisibleCommentsCount((prevCount) => prevCount + maxCommentsPerPage);
+    setCommentsShowing(allComments.slice(0, visibleCommentsCount + maxCommentsPerPage));
+  };
+
   return (
     <Accordion>
       <AccordionSummary
@@ -150,7 +151,19 @@ export default function ArticleComments({ articleId }) {
       </AccordionSummary>
       <AccordionDetails>
         {isNeedLoginVisible && (
-          <Alert severity="error" action={<Link to="/login">Login</Link>}>
+          <Alert
+            severity="error"
+            action={
+              <Button
+                onClick={() => {
+                  navigate("/login");
+                }}
+                size="small"
+              >
+                Login
+              </Button>
+            }
+          >
             Not Logged In.
           </Alert>
         )}
@@ -249,6 +262,12 @@ export default function ArticleComments({ articleId }) {
             </React.Fragment>
           );
         })}
+
+        {visibleCommentsCount < allComments.length && (
+          <Button variant="outlined" onClick={onClickHandle_loadMore}>
+            Load More Comments
+          </Button>
+        )}
       </AccordionDetails>
       <Snackbar open={open} autoHideDuration={2500} onClose={handleClose} message={alertMessage} action={action} />
     </Accordion>
