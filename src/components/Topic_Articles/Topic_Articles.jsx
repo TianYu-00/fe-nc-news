@@ -16,6 +16,8 @@ import { Link } from "react-router-dom";
 import ButtonGroup from "@mui/material/ButtonGroup";
 import Button from "@mui/material/Button";
 import Typography from "@mui/material/Typography";
+import PersonIcon from "@mui/icons-material/Person";
+import ArticleIcon from "@mui/icons-material/Article";
 
 export default function Topic_Articles() {
   const [searchParams, setSearchParams] = useSearchParams();
@@ -198,21 +200,27 @@ export default function Topic_Articles() {
                             />
                           </Grid>
                           <Grid xs={12} sm={6}>
-                            <Typography variant="h6" gutterBottom>
+                            <Typography variant="h5" gutterBottom>
                               {article.title}
                             </Typography>
-                            <Typography variant="body1" gutterBottom>
-                              {article.author}
-                            </Typography>
-                            <Typography variant="body1" gutterBottom>
-                              Topic: {article.topic}
-                            </Typography>
+                            <Grid container sx={{ justifyContent: "center" }} wrap="nowrap">
+                              <PersonIcon />
+                              <Typography variant="body1" gutterBottom>
+                                {article.author}
+                              </Typography>
+                            </Grid>
+                            <Grid container sx={{ justifyContent: "center" }} wrap="nowrap">
+                              <ArticleIcon />
+                              <Typography variant="body1" gutterBottom>
+                                {article.topic}
+                              </Typography>
+                            </Grid>
                           </Grid>
                         </Grid>
                         <Grid>
-                          <p style={{ fontSize: "0.75rem", textWrap: "nowrap" }}>
+                          <Typography variant="body1" gutterBottom sx={{ textWrap: "nowrap" }}>
                             Votes: {article.votes} | Comments: {article.comment_count} | Created At: {articleDate}
-                          </p>
+                          </Typography>
                         </Grid>
                       </Item>
                     </Link>

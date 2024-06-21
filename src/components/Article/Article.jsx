@@ -9,6 +9,7 @@ import Alert from "@mui/material/Alert";
 import Box from "@mui/material/Box";
 import Typography from "@mui/material/Typography";
 import Grid from "@mui/material/Unstable_Grid2";
+import PersonIcon from "@mui/icons-material/Person";
 
 export default function Article() {
   const { article_id } = useParams();
@@ -86,10 +87,14 @@ export default function Article() {
             style={{ maxWidth: "1000px", width: "100%", objectFit: "cover" }}
             loading="lazy"
           />
-          <p>Author: {article.author}</p>
-          <p>{articleDate}</p>
+
+          <Grid container sx={{ justifyContent: "center", alignItems: "center", marginBottom: "10px" }} wrap="nowrap">
+            <PersonIcon />
+            <Typography variant="h5">{article.author}</Typography>
+          </Grid>
+          <Typography variant="body2">{articleDate}</Typography>
           <Box sx={{ padding: "25px" }}>
-            <p>{article.body}</p>
+            <Typography variant="body1">{article.body}</Typography>
           </Box>
 
           {voteSuccessAlertVisible && (

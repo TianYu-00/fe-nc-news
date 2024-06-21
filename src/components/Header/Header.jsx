@@ -7,6 +7,11 @@ import "./header.css";
 import Box from "@mui/material/Box";
 import Typography from "@mui/material/Typography";
 
+// Icons
+import HomeIcon from "@mui/icons-material/Home";
+import LoginIcon from "@mui/icons-material/Login";
+import ArticleIcon from "@mui/icons-material/Article";
+
 export default function Header() {
   const { user } = useContext(LoginContext);
   useEffect(() => {}, []);
@@ -17,21 +22,39 @@ export default function Header() {
           NC News
         </Typography>
         <Grid container sx={{ alignItems: "center", justifyContent: "center" }} xs>
-          <Grid className="navLinkGrid">
-            <Link to="/home" className="noDecoLink">
-              Home
-            </Link>
+          <Grid>
+            <HomeIcon />
           </Grid>
-          <Grid className="navLinkGrid">
-            <Link to="/login" className="noDecoLink">
-              Login
-            </Link>
+          <Grid>
+            <Typography variant="body1" gutterBottom>
+              <Link to="/home" className="noDecoLink">
+                Home
+              </Link>
+            </Typography>
           </Grid>
-          <Grid className="navLinkGrid">
-            <Link to="/topic_articles" className="noDecoLink">
-              Articles
-            </Link>
+
+          <Grid>
+            <LoginIcon />
           </Grid>
+          <Grid>
+            <Typography variant="body1" gutterBottom>
+              <Link to="/login" className="noDecoLink">
+                Login
+              </Link>
+            </Typography>
+          </Grid>
+
+          <Grid>
+            <ArticleIcon />
+          </Grid>
+          <Grid>
+            <Typography variant="body1" gutterBottom>
+              <Link to="/topic_articles" className="noDecoLink">
+                Articles
+              </Link>
+            </Typography>
+          </Grid>
+
           <Grid
             sx={{
               flexShrink: 0,
