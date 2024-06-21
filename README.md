@@ -14,7 +14,7 @@ This project involves creating Northcoders News - a social news aggregation, web
 
 
 
-https://fe-nc-news-tian.netlify.app/home
+https://fe-nc-news-tian.netlify.app
 
 </div>
 
