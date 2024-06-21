@@ -43,7 +43,7 @@ export default function Home() {
         <Button
           sx={{
             position: "absolute",
-            bottom: "50%",
+            bottom: "40%",
           }}
           onClick={() => {
             navigate("/topic_articles");
