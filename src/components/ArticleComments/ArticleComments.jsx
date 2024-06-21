@@ -147,7 +147,7 @@ export default function ArticleComments({ articleId }) {
     }
 
     if (comment.author === user.username) {
-      setAlertMessage("Can not vote your own comment");
+      setAlertMessage("You cannot vote for your own comment.");
       setOpen(true);
       return;
     }

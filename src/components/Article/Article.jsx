@@ -71,7 +71,7 @@ export default function Article() {
     }
 
     if (article.author === user.username) {
-      setAlertMessage("Can not vote on your own article");
+      setAlertMessage("You cannot vote on your own article.");
       setOpen(true);
       return;
     }
