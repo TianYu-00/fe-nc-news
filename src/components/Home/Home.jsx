@@ -19,7 +19,7 @@ export default function Home() {
           justifyContent: "center",
           alignItems: "center",
           textAlign: "center",
-          position: "relative",
+          padding: "2rem",
         }}
       >
         <Box
@@ -29,8 +29,7 @@ export default function Home() {
             flexWrap: "wrap",
             justifyContent: "center",
             fontSize: "3rem",
-            marginTop: "-25vh",
-            position: "relative",
+            marginBottom: "2rem",
           }}
         >
           <Typography variant="h2" gutterBottom>
@@ -42,8 +41,7 @@ export default function Home() {
         </Box>
         <Button
           sx={{
-            position: "absolute",
-            bottom: "40%",
+            marginTop: "1rem",
           }}
           onClick={() => {
             navigate("/topic_articles");
