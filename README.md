@@ -7,9 +7,14 @@ This project involves creating Northcoders News - a social news aggregation, web
 
 [Prerequisites](https://github.com/TianYu-00/fe-nc-news/tree/task14-core-write-a-readme?tab=readme-ov-file#prerequisites) | [Setup Instruction](https://github.com/TianYu-00/fe-nc-news/tree/task14-core-write-a-readme?tab=readme-ov-file#prerequisites) | [Links](https://github.com/TianYu-00/fe-nc-news/tree/task14-core-write-a-readme?tab=readme-ov-file#links)
 
-![image](https://github.com/TianYu-00/fe-nc-news/assets/66271788/27318e35-17a1-4be0-8957-3a84448526c8)
+![fe-nc-news-gif](https://github.com/TianYu-00/fe-nc-news/assets/66271788/3e81bd4c-e11f-46f6-8a20-ac8998995e3b)
+
  <!-- Place Holder Image -->
-https://fe-nc-news-tian.netlify.app/home
+
+
+
+
+https://fe-nc-news-tian.netlify.app
 
 </div>
 
