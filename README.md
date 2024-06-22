@@ -123,5 +123,14 @@ ADVANCED: User Experience ✅
 -->
 
 
+<!--
+
+ - Back to top
+ - Animation on hover article
+ - Hover avatar info
+
+-->
+
+
 ## 
 This portfolio project was created as part of a Digital Skills Bootcamp in Software Engineering provided by [Northcoders](https://northcoders.com/)
