@@ -1,5 +1,5 @@
-import React, { useState, useEffect } from "react";
-import { fetchArticles, fetchTopics } from "../../api";
+import React, { useState, useEffect, useContext } from "react";
+import { fetchArticles, fetchTopics, fetchUsers } from "../../api";
 import { useSearchParams } from "react-router-dom";
 
 // MUI
@@ -20,8 +20,13 @@ import PersonIcon from "@mui/icons-material/Person";
 import ArticleIcon from "@mui/icons-material/Article";
 import CircularProgress from "@mui/material/CircularProgress";
 import Pagination from "@mui/material/Pagination";
+import { border, textAlign } from "@mui/system";
+import Avatar from "@mui/material/Avatar";
+import { LoginContext } from "../UserLoginProvider/UserLoginProvider";
 
 export default function Topic_Articles() {
+  const { user } = useContext(LoginContext);
+
   const [searchParams, setSearchParams] = useSearchParams();
   const [articles, setAllArticles] = useState([]);
   const [isArticleLoading, setIsArticleLoading] = useState(false);
@@ -33,6 +38,7 @@ export default function Topic_Articles() {
   const [currentPage, setCurrentPage] = useState(1);
   const maxArticlesPerPage = 5;
   const [totalPageCount, setTotalPageCount] = useState(1);
+  const [allUsers, setAllUsers] = useState([]);
 
   // Load Once
   useEffect(() => {
@@ -45,6 +51,9 @@ export default function Topic_Articles() {
     fetchTopics().then((topics) => {
       setAllTopics(topics);
     });
+    fetchUsers().then((users) => {
+      setAllUsers(users);
+    });
   }, []);
 
   // Fetch articles
@@ -55,6 +64,7 @@ export default function Topic_Articles() {
         setAllArticles(articles);
         applyFilters(articles, selectedTopic, currentPage);
         setIsArticleLoading(false);
+        console.log(articles);
       });
     }
   }, [selectedTopic, selectedSortBy, selectedSortByOrder]);
@@ -130,7 +140,7 @@ export default function Topic_Articles() {
       >
         <Box
           sx={{
-            maxWidth: "1000px",
+            maxWidth: "800px",
             justifyContent: "center",
             alignItems: "center",
             margin: "0 auto",
@@ -218,39 +228,73 @@ export default function Topic_Articles() {
             <Stack spacing={2} sx={{ justifyContent: "center", alignItems: "center", margin: "0 auto" }}>
               {articlesShowing.map((article, index) => {
                 let articleDate = new Date(article.created_at).toLocaleDateString("en-UK");
+                // get avatar url
+                const avatarImgURL = allUsers.reduce((tempURL, user) => {
+                  if (user.username === article.author) {
+                    tempURL = user.avatar_url;
+                  }
+                  return tempURL;
+                }, "");
                 return (
                   <React.Fragment key={index}>
                     <Link to={`/article/${article.article_id}`} style={{ textDecoration: "none" }}>
-                      <Item sx={{ maxWidth: "750px" }}>
+                      <Item sx={{ maxWidth: "750px", borderRadius: "10px", margin: "auto 10px" }}>
                         <Grid container>
                           <Grid xs={12} sm={6}>
                             <img
                               src={article.article_img_url}
                               alt={article.title}
-                              style={{ width: "100%", objectFit: "cover" }}
+                              style={{ width: "100%", objectFit: "cover", borderRadius: "10px" }}
                               loading="lazy"
                             />
                           </Grid>
-                          <Grid xs={12} sm={6}>
-                            <Typography variant="h5" gutterBottom>
-                              {article.title}
-                            </Typography>
-                            <Grid container sx={{ justifyContent: "center" }} wrap="nowrap">
-                              <PersonIcon />
-                              <Typography variant="body1" gutterBottom>
-                                {article.author}
+
+                          {/* Right side item grid */}
+                          <Grid
+                            xs={12}
+                            sm={6}
+                            sx={{
+                              paddingLeft: "20px",
+                              paddingRight: "10px",
+                            }}
+                          >
+                            <Grid
+                              xs={8}
+                              sx={{
+                                height: "100%",
+                                display: "flex",
+                                flexDirection: "column",
+                                justifyContent: "space-between",
+                              }}
+                            >
+                              <Typography variant="h5" sx={{ textAlign: "left" }}>
+                                {article.title}
                               </Typography>
-                            </Grid>
-                            <Grid container sx={{ justifyContent: "center" }} wrap="nowrap">
-                              <ArticleIcon />
-                              <Typography variant="body1" gutterBottom>
-                                {article.topic}
-                              </Typography>
+                              <Grid
+                                container
+                                sx={{
+                                  justifyContent: "left",
+                                  alignItems: "flex-end",
+                                  margin: "20px 0",
+                                }}
+                              >
+                                <Avatar
+                                  alt={"place holder"}
+                                  src={avatarImgURL}
+                                  sx={{ width: 50, height: 50, border: "1px solid black" }}
+                                />
+                                <Stack>
+                                  <Typography variant="body1" sx={{ paddingLeft: "10px", fontWeight: "bold" }}>
+                                    by {article.author}
+                                  </Typography>
+                                  <Typography variant="body1">{articleDate}</Typography>
+                                </Stack>
+                              </Grid>
                             </Grid>
                           </Grid>
                         </Grid>
                         <Grid>
-                          <Typography variant="body1" gutterBottom sx={{ textWrap: "nowrap" }}>
+                          <Typography variant="body1" sx={{ textWrap: "nowrap" }}>
                             Votes: {article.votes} | Comments: {article.comment_count} | Created At: {articleDate}
                           </Typography>
                         </Grid>
