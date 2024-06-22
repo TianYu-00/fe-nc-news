@@ -16,16 +16,11 @@ import { Link } from "react-router-dom";
 import ButtonGroup from "@mui/material/ButtonGroup";
 import Button from "@mui/material/Button";
 import Typography from "@mui/material/Typography";
-import PersonIcon from "@mui/icons-material/Person";
-import ArticleIcon from "@mui/icons-material/Article";
 import CircularProgress from "@mui/material/CircularProgress";
 import Pagination from "@mui/material/Pagination";
-import { border, textAlign } from "@mui/system";
 import Avatar from "@mui/material/Avatar";
-import { LoginContext } from "../UserLoginProvider/UserLoginProvider";
 
 export default function Topic_Articles() {
-  const { user } = useContext(LoginContext);
   const [searchParams, setSearchParams] = useSearchParams();
   const [articles, setAllArticles] = useState([]);
   const [isArticleLoading, setIsArticleLoading] = useState(true);
