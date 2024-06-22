@@ -26,10 +26,9 @@ import { LoginContext } from "../UserLoginProvider/UserLoginProvider";
 
 export default function Topic_Articles() {
   const { user } = useContext(LoginContext);
-
   const [searchParams, setSearchParams] = useSearchParams();
   const [articles, setAllArticles] = useState([]);
-  const [isArticleLoading, setIsArticleLoading] = useState(false);
+  const [isArticleLoading, setIsArticleLoading] = useState(true);
   const [allTopics, setAllTopics] = useState([]);
   const [selectedTopic, setSelectedTopic] = useState("none");
   const [articlesShowing, setArticlesShowing] = useState([]);
@@ -40,74 +39,91 @@ export default function Topic_Articles() {
   const [totalPageCount, setTotalPageCount] = useState(1);
   const [allUsers, setAllUsers] = useState([]);
 
-  // Load Once
   useEffect(() => {
     const topicFromUrl = searchParams.get("topic") || "none";
-    setSelectedTopic(topicFromUrl);
     const sortByFromUrl = searchParams.get("sort_by") || "";
-    setSelectedSortBy(sortByFromUrl);
     const sortByOrderFromUrl = searchParams.get("order") || "DESC";
+    const pageFromUrl = parseInt(searchParams.get("page")) || 1;
+
+    setSelectedTopic(topicFromUrl);
+    setSelectedSortBy(sortByFromUrl);
     setSelectedSortByOrder(sortByOrderFromUrl);
-    fetchTopics().then((topics) => {
-      setAllTopics(topics);
-    });
-    fetchUsers().then((users) => {
-      setAllUsers(users);
-    });
+    setCurrentPage(pageFromUrl);
+
+    Promise.all([fetchTopics(), fetchUsers()])
+      .then(([topics, users]) => {
+        setAllTopics(topics);
+        setAllUsers(users);
+        return fetchArticles(sortByFromUrl, sortByOrderFromUrl);
+      })
+      .then((articles) => {
+        setAllArticles(articles);
+        applyFilters(articles, topicFromUrl, pageFromUrl);
+        setIsArticleLoading(false);
+      })
+      .catch((error) => {
+        console.log(error);
+        setIsArticleLoading(false);
+      });
   }, []);
 
-  // Fetch articles
   useEffect(() => {
-    if (!isArticleLoading) {
-      setIsArticleLoading(true);
-      fetchArticles(selectedSortBy, selectedSortByOrder).then((articles) => {
+    if (isArticleLoading) return;
+
+    fetchArticles(selectedSortBy, selectedSortByOrder)
+      .then((articles) => {
         setAllArticles(articles);
         applyFilters(articles, selectedTopic, currentPage);
-        setIsArticleLoading(false);
-        console.log(articles);
+      })
+      .catch((error) => {
+        console.error("Error fetching articles:", error);
       });
-    }
-  }, [selectedTopic, selectedSortBy, selectedSortByOrder]);
+  }, [selectedSortBy, selectedSortByOrder]);
 
-  // Handle pagination
-  useEffect(() => {
-    applyFilters(articles, selectedTopic, currentPage);
-  }, [articles, currentPage]);
-
-  function applyFilters() {
+  function applyFilters(articles, selectedTopic, page) {
     let filteredArticles = articles;
     if (selectedTopic !== "none") {
       filteredArticles = articles.filter((article) => article.topic === selectedTopic);
     }
     setTotalPageCount(Math.ceil(filteredArticles.length / maxArticlesPerPage));
-    const startIndex = (currentPage - 1) * maxArticlesPerPage;
+    const startIndex = (page - 1) * maxArticlesPerPage;
     const endIndex = startIndex + maxArticlesPerPage;
     setArticlesShowing(filteredArticles.slice(startIndex, endIndex));
   }
 
   function onChangeHandle_pageChange(event, value) {
     setCurrentPage(value);
+    applyFilters(articles, selectedTopic, value);
+    const newSearchParams = new URLSearchParams(searchParams);
+    newSearchParams.set("page", value);
+    setSearchParams(newSearchParams);
   }
 
   function onChangeHandle_topicChange(event) {
+    const newTopic = event.target.value;
     const newSearchParams = new URLSearchParams(searchParams);
-    newSearchParams.set("topic", event.target.value);
+    newSearchParams.set("topic", newTopic);
+    newSearchParams.set("page", 1);
     setSearchParams(newSearchParams);
-    setSelectedTopic(event.target.value);
+    setSelectedTopic(newTopic);
     setCurrentPage(1);
+    applyFilters(articles, newTopic, 1);
   }
 
   function onChangeHandle_sortByChange(event) {
+    const newSortBy = event.target.value;
     const newSearchParams = new URLSearchParams(searchParams);
-    newSearchParams.set("sort_by", event.target.value);
+    newSearchParams.set("sort_by", newSortBy);
+    newSearchParams.set("page", 1);
     setSearchParams(newSearchParams);
-    setSelectedSortBy(event.target.value);
+    setSelectedSortBy(newSortBy);
     setCurrentPage(1);
   }
 
   function onClickHandle_sortByOrderChange(order) {
     const newSearchParams = new URLSearchParams(searchParams);
     newSearchParams.set("order", order);
+    newSearchParams.set("page", 1);
     setSearchParams(newSearchParams);
     setSelectedSortByOrder(order);
     setCurrentPage(1);
@@ -175,7 +191,7 @@ export default function Topic_Articles() {
                     <MenuItem value="none">None</MenuItem>
                     {allTopics.map((topic) => (
                       <MenuItem key={topic.slug} value={topic.slug}>
-                        {topic.slug}
+                        {topic.slug.charAt(0).toUpperCase() + topic.slug.slice(1)}
                       </MenuItem>
                     ))}
                   </Select>
