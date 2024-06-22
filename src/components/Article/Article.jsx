@@ -54,7 +54,7 @@ export default function Article() {
           justifyContent: "center",
           alignItems: "center",
           height: "83vh",
-          backgroundColor: "#1A2027",
+          backgroundColor: (theme) => theme.palette.background.container,
         }}
       >
         <Stack
@@ -126,7 +126,7 @@ export default function Article() {
         sx={{
           width: "100%",
           minHeight: "83vh",
-          backgroundColor: "#1A2027",
+          backgroundColor: (theme) => theme.palette.background.container,
         }}
       >
         <Box sx={{ maxWidth: "1500px", margin: "0 auto" }}>

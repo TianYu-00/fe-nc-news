@@ -13,23 +13,37 @@ import Article from "./components/Article/Article";
 import WildCardPath from "./components/WildCardPath/WildCardPath";
 import Footer from "./components/Footer/Footer";
 
+//
+import { ThemeProvider } from "@mui/material/styles";
+import CssBaseline from "@mui/material/CssBaseline";
+import { darkTheme, lightTheme } from "./theme.js";
+
 function App() {
+  const [isDarkMode, setIsDarkMode] = useState(true);
+
+  const toggleTheme = () => {
+    setIsDarkMode(!isDarkMode);
+  };
+
   return (
     <>
-      <BrowserRouter>
-        <UserLoginProvider>
-          <Header />
-          <Routes>
-            <Route path="/" element={<Home />} />
-            <Route path="/home" element={<Home />} />
-            <Route path="/login" element={<Login />} />
-            <Route path="/topic_articles" element={<Topic_Articles />} />
-            <Route path="/article/:article_id" element={<Article />} />
-            <Route path="*" element={<WildCardPath />} />
-          </Routes>
-          <Footer />
-        </UserLoginProvider>
-      </BrowserRouter>
+      <ThemeProvider theme={isDarkMode ? darkTheme : lightTheme}>
+        <CssBaseline />
+        <BrowserRouter>
+          <UserLoginProvider>
+            <Header isDarkMode={isDarkMode} toggleTheme={toggleTheme} />
+            <Routes>
+              <Route path="/" element={<Home />} />
+              <Route path="/home" element={<Home />} />
+              <Route path="/login" element={<Login />} />
+              <Route path="/topic_articles" element={<Topic_Articles />} />
+              <Route path="/article/:article_id" element={<Article />} />
+              <Route path="*" element={<WildCardPath />} />
+            </Routes>
+            <Footer />
+          </UserLoginProvider>
+        </BrowserRouter>
+      </ThemeProvider>
     </>
   );
 }

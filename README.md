@@ -133,6 +133,7 @@ ADVANCED: User Experience ✅
  - Back to top
  - Animation on hover article
  - Hover avatar info
+ - Day/Night Theming
 
 -->
 

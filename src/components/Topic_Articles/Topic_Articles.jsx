@@ -89,31 +89,6 @@ export default function Topic_Articles() {
     setCurrentPage(value);
   }
 
-  if (isArticleLoading) {
-    return (
-      <Box
-        sx={{
-          display: "flex",
-          justifyContent: "center",
-          alignItems: "center",
-          height: "83vh",
-          backgroundColor: "#1A2027",
-        }}
-      >
-        <Stack
-          sx={{
-            display: "flex",
-            justifyContent: "center",
-            alignItems: "center",
-          }}
-        >
-          <CircularProgress />
-          <Typography variant="h3">Getting data from server...</Typography>
-        </Stack>
-      </Box>
-    );
-  }
-
   function onChangeHandle_topicChange(event) {
     const newSearchParams = new URLSearchParams(searchParams);
     newSearchParams.set("topic", event.target.value);
@@ -138,13 +113,38 @@ export default function Topic_Articles() {
     setCurrentPage(1);
   }
 
+  if (isArticleLoading) {
+    return (
+      <Box
+        sx={{
+          display: "flex",
+          justifyContent: "center",
+          alignItems: "center",
+          height: "83vh",
+          backgroundColor: (theme) => theme.palette.background.container,
+        }}
+      >
+        <Stack
+          sx={{
+            display: "flex",
+            justifyContent: "center",
+            alignItems: "center",
+          }}
+        >
+          <CircularProgress />
+          <Typography variant="h3">Getting data from server...</Typography>
+        </Stack>
+      </Box>
+    );
+  }
+
   return (
     <div>
       <Box
         sx={{
           width: "100%",
           height: "100%",
-          backgroundColor: "#1A2027",
+          backgroundColor: (theme) => theme.palette.background.container,
         }}
       >
         <Box
@@ -153,7 +153,6 @@ export default function Topic_Articles() {
             justifyContent: "center",
             alignItems: "center",
             margin: "0 auto",
-            backgroundColor: "#1A2027",
           }}
         >
           <Typography variant="h4" sx={{ marginBottom: "20px" }}>
@@ -251,11 +250,12 @@ export default function Topic_Articles() {
                         sx={{
                           maxWidth: "750px",
                           borderRadius: "10px",
-                          margin: "auto 10px",
+                          margin: "auto 5px",
                           transition: "transform 0.3s ease-in-out",
                           "&:hover": {
                             transform: "scale(1.02)",
                           },
+                          backgroundColor: (theme) => theme.palette.background.default,
                         }}
                       >
                         <Grid container>

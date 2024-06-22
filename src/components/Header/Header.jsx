@@ -11,13 +11,17 @@ import Typography from "@mui/material/Typography";
 import HomeIcon from "@mui/icons-material/Home";
 import LoginIcon from "@mui/icons-material/Login";
 import ArticleIcon from "@mui/icons-material/Article";
+import DarkModeIcon from "@mui/icons-material/DarkMode";
+import LightModeIcon from "@mui/icons-material/LightMode";
 
-export default function Header() {
+import Button from "@mui/material/Button";
+
+export default function Header({ isDarkMode, toggleTheme }) {
   const { user } = useContext(LoginContext);
-  useEffect(() => {}, []);
+
   return (
     <>
-      <Box sx={{ backgroundColor: "#1A2027", margin: "0px 0px 20px 0px" }}>
+      <Box sx={{ backgroundColor: (theme) => theme.palette.background.paper, margin: "0px 0px 20px 0px" }}>
         <Typography variant="h1" gutterBottom>
           NC News
         </Typography>
@@ -64,6 +68,15 @@ export default function Header() {
             {/* https://placehold.co/ */}
             <Avatar alt={"place holder"} src={user ? user.avatar_url : null} sx={{ width: 35, height: 35 }} />
           </Grid>
+          {isDarkMode ? (
+            <Button variant="outlined" startIcon={<DarkModeIcon />} onClick={toggleTheme}>
+              Dark
+            </Button>
+          ) : (
+            <Button variant="outlined" startIcon={<LightModeIcon />} onClick={toggleTheme}>
+              Light
+            </Button>
+          )}
         </Grid>
       </Box>
     </>
