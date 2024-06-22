@@ -14,6 +14,7 @@ import CircularProgress from "@mui/material/CircularProgress";
 import Snackbar from "@mui/material/Snackbar";
 import CloseIcon from "@mui/icons-material/Close";
 import { LoginContext } from "../UserLoginProvider/UserLoginProvider";
+import Stack from "@mui/material/Stack";
 
 export default function Article() {
   const { article_id } = useParams();
@@ -56,7 +57,16 @@ export default function Article() {
           backgroundColor: "#1A2027",
         }}
       >
-        <CircularProgress />
+        <Stack
+          sx={{
+            display: "flex",
+            justifyContent: "center",
+            alignItems: "center",
+          }}
+        >
+          <CircularProgress />
+          <Typography variant="h3">Getting data from server...</Typography>
+        </Stack>
       </Box>
     );
   }

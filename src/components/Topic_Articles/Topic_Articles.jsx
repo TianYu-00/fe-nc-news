@@ -100,7 +100,16 @@ export default function Topic_Articles() {
           backgroundColor: "#1A2027",
         }}
       >
-        <CircularProgress />
+        <Stack
+          sx={{
+            display: "flex",
+            justifyContent: "center",
+            alignItems: "center",
+          }}
+        >
+          <CircularProgress />
+          <Typography variant="h3">Getting data from server...</Typography>
+        </Stack>
       </Box>
     );
   }
@@ -238,7 +247,17 @@ export default function Topic_Articles() {
                 return (
                   <React.Fragment key={index}>
                     <Link to={`/article/${article.article_id}`} style={{ textDecoration: "none" }}>
-                      <Item sx={{ maxWidth: "750px", borderRadius: "10px", margin: "auto 10px" }}>
+                      <Item
+                        sx={{
+                          maxWidth: "750px",
+                          borderRadius: "10px",
+                          margin: "auto 10px",
+                          transition: "transform 0.3s ease-in-out",
+                          "&:hover": {
+                            transform: "scale(1.02)",
+                          },
+                        }}
+                      >
                         <Grid container>
                           <Grid xs={12} sm={6}>
                             <img
@@ -267,7 +286,7 @@ export default function Topic_Articles() {
                                 justifyContent: "space-between",
                               }}
                             >
-                              <Typography variant="h5" sx={{ textAlign: "left" }}>
+                              <Typography variant="h5" color="text.primary" sx={{ textAlign: "left" }}>
                                 {article.title}
                               </Typography>
                               <Grid
@@ -281,7 +300,7 @@ export default function Topic_Articles() {
                                 <Avatar
                                   alt={"place holder"}
                                   src={avatarImgURL}
-                                  sx={{ width: 50, height: 50, border: "1px solid black" }}
+                                  sx={{ width: 45, height: 45, border: "1px solid black" }}
                                 />
                                 <Stack>
                                   <Typography variant="body1" sx={{ paddingLeft: "10px", fontWeight: "bold" }}>
@@ -295,7 +314,7 @@ export default function Topic_Articles() {
                         </Grid>
                         <Grid>
                           <Typography variant="body1" sx={{ textWrap: "nowrap" }}>
-                            Votes: {article.votes} | Comments: {article.comment_count} | Created At: {articleDate}
+                            Votes: {article.votes} | Comments: {article.comment_count}
                           </Typography>
                         </Grid>
                       </Item>
