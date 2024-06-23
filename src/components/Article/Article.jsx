@@ -14,6 +14,7 @@ import Snackbar from "@mui/material/Snackbar";
 import CloseIcon from "@mui/icons-material/Close";
 import { LoginContext } from "../UserLoginProvider/UserLoginProvider";
 import Stack from "@mui/material/Stack";
+import BackToTopButton from "../BackToTop/BackToTopButton";
 
 export default function Article() {
   const { article_id } = useParams();
@@ -171,6 +172,7 @@ export default function Article() {
           <Comments articleId={article_id} />
         </Box>
         <Snackbar open={open} autoHideDuration={2500} onClose={handleClose} message={alertMessage} action={action} />
+        <BackToTopButton />
       </Box>
     </>
   );
