@@ -3,22 +3,18 @@ import { createTheme } from "@mui/material/styles";
 // https://imagecolorpicker.com/color-code/ffffff
 // https://encycolorpedia.com/html
 
-const theme = createTheme({
+const darkTheme = createTheme({
   palette: {
     mode: "dark",
-    primary: {
-      main: "#90caf9", // #90caf9 Malibu (Blue)
-    },
-    secondary: {
-      main: "#f48fb1", // #f48fb1 Mauvelous (Pink)
-    },
     background: {
-      default: "#222831", // #222831 Ebony Clay (Black)
-      paper: "#202833", // #393E46 Bright Gray (Gray)
+      default: "#22282f",
+      paper: "#1b2026",
+      container: "#1A2027",
+      footer: "#22282F",
     },
     text: {
-      primary: "#ffffff", // White
-      secondary: "#b0bec5", // #b0bec5 Tower Gray
+      primary: "#ffffff",
+      secondary: "#b0bec5",
     },
   },
   typography: {
@@ -26,4 +22,23 @@ const theme = createTheme({
   },
 });
 
-export default theme;
+const lightTheme = createTheme({
+  palette: {
+    mode: "light",
+    background: {
+      default: "#F8F6F4",
+      paper: "#E3F4F4",
+      container: "#D2E9E9",
+      footer: "#C4DFDF",
+    },
+    text: {
+      primary: "#000000",
+      secondary: "#37474f",
+    },
+  },
+  typography: {
+    fontFamily: "Dosis, Arial, sans-serif",
+  },
+});
+
+export { darkTheme, lightTheme };

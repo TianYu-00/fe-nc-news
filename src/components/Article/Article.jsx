@@ -5,7 +5,6 @@ import ThumbUpIcon from "@mui/icons-material/ThumbUp";
 import ThumbDownIcon from "@mui/icons-material/ThumbDown";
 import IconButton from "@mui/material/IconButton";
 import Comments from "../ArticleComments/ArticleComments";
-import Alert from "@mui/material/Alert";
 import Box from "@mui/material/Box";
 import Typography from "@mui/material/Typography";
 import Grid from "@mui/material/Unstable_Grid2";
@@ -14,6 +13,8 @@ import CircularProgress from "@mui/material/CircularProgress";
 import Snackbar from "@mui/material/Snackbar";
 import CloseIcon from "@mui/icons-material/Close";
 import { LoginContext } from "../UserLoginProvider/UserLoginProvider";
+import Stack from "@mui/material/Stack";
+import BackToTopButton from "../BackToTop/BackToTopButton";
 
 export default function Article() {
   const { article_id } = useParams();
@@ -53,10 +54,19 @@ export default function Article() {
           justifyContent: "center",
           alignItems: "center",
           height: "83vh",
-          backgroundColor: "#1A2027",
+          backgroundColor: (theme) => theme.palette.background.container,
         }}
       >
-        <CircularProgress />
+        <Stack
+          sx={{
+            display: "flex",
+            justifyContent: "center",
+            alignItems: "center",
+          }}
+        >
+          <CircularProgress />
+          <Typography variant="h3">Getting data from server...</Typography>
+        </Stack>
       </Box>
     );
   }
@@ -116,7 +126,7 @@ export default function Article() {
         sx={{
           width: "100%",
           minHeight: "83vh",
-          backgroundColor: "#1A2027",
+          backgroundColor: (theme) => theme.palette.background.container,
         }}
       >
         <Box sx={{ maxWidth: "1500px", margin: "0 auto" }}>
@@ -162,6 +172,7 @@ export default function Article() {
           <Comments articleId={article_id} />
         </Box>
         <Snackbar open={open} autoHideDuration={2500} onClose={handleClose} message={alertMessage} action={action} />
+        <BackToTopButton />
       </Box>
     </>
   );

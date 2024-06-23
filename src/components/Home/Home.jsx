@@ -13,7 +13,7 @@ export default function Home() {
         sx={{
           width: "100%",
           height: "83vh",
-          backgroundColor: "#1A2027",
+          backgroundColor: (theme) => theme.palette.background.container,
           display: "flex",
           flexDirection: "column",
           justifyContent: "center",

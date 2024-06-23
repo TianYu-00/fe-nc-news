@@ -15,7 +15,7 @@ export default function Footer() {
         justifyContent: "center",
         alignItems: "center",
         margin: "0 auto",
-        backgroundColor: "#161a1e",
+        backgroundColor: (theme) => theme.palette.background.footer,
       }}
     >
       <Button
