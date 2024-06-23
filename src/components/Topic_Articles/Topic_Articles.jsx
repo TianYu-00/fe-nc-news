@@ -273,7 +273,7 @@ export default function Topic_Articles() {
                           <Grid xs={12} sm={6}>
                             <img
                               src={article.article_img_url}
-                              alt={article.title}
+                              alt={"image alt " + article.title}
                               style={{ width: "100%", objectFit: "cover", borderRadius: "10px" }}
                               loading="lazy"
                             />
@@ -309,7 +309,7 @@ export default function Topic_Articles() {
                                 }}
                               >
                                 <Avatar
-                                  alt={"place holder"}
+                                  alt={"avatar image of " + article.author}
                                   src={avatarImgURL}
                                   sx={{ width: 45, height: 45, border: "1px solid black" }}
                                 />
