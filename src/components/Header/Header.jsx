@@ -6,6 +6,8 @@ import { LoginContext } from "../UserLoginProvider/UserLoginProvider";
 import "./header.css";
 import Box from "@mui/material/Box";
 import Typography from "@mui/material/Typography";
+import Stack from "@mui/material/Stack";
+import IconButton from "@mui/material/IconButton";
 
 // Icons
 import HomeIcon from "@mui/icons-material/Home";
@@ -15,9 +17,20 @@ import DarkModeIcon from "@mui/icons-material/DarkMode";
 import LightModeIcon from "@mui/icons-material/LightMode";
 
 import Button from "@mui/material/Button";
+import HeaderAvatarWithHoverBox from "../OnHoverAvatar/OnHoverAvatar";
+import { useNavigate } from "react-router-dom";
 
 export default function Header({ isDarkMode, toggleTheme }) {
-  const { user } = useContext(LoginContext);
+  const { isLogin, setIsLogin, user, setUser } = useContext(LoginContext);
+  const navigate = useNavigate();
+
+  const onClickHandle_LogOut = () => {
+    setIsLogin(false);
+    setUser([]);
+  };
+  const onClickHandle_Login = () => {
+    navigate("/login");
+  };
 
   return (
     <>
@@ -59,23 +72,53 @@ export default function Header({ isDarkMode, toggleTheme }) {
             </Typography>
           </Grid>
 
-          <Grid
-            sx={{
-              flexShrink: 0,
-              margin: "5px",
-            }}
-          >
-            {/* https://placehold.co/ */}
-            <Avatar alt={"place holder"} src={user ? user.avatar_url : null} sx={{ width: 35, height: 35 }} />
-          </Grid>
+          {/* {console.log(user)} */}
+          <HeaderAvatarWithHoverBox
+            avatarURL={user ? user.avatar_url : null}
+            avatarAlt="Avatar"
+            boxContent={
+              <Box
+                sx={(theme) => ({
+                  backgroundColor: theme.palette.background.default,
+                  width: "150px",
+                  height: "150px",
+                  border: `1px solid ${theme.palette.background.opposite}`,
+                })}
+              >
+                <Stack>
+                  <Typography variant="body1" gutterBottom sx={{ marginTop: "5px" }}>
+                    Name: {user.name}
+                  </Typography>
+                  <Typography variant="body1" gutterBottom>
+                    Username: {user.username}
+                  </Typography>
+                  {isLogin ? (
+                    <Button
+                      variant="contained"
+                      color="error"
+                      onClick={onClickHandle_LogOut}
+                      sx={{ margin: "5px auto" }}
+                    >
+                      LogOut
+                    </Button>
+                  ) : (
+                    <Button variant="contained" onClick={onClickHandle_Login} sx={{ margin: "5px auto" }}>
+                      Go To Login
+                    </Button>
+                  )}
+                </Stack>
+              </Box>
+            }
+          />
+
           {isDarkMode ? (
-            <Button variant="outlined" startIcon={<DarkModeIcon />} onClick={toggleTheme}>
-              Dark
-            </Button>
+            <IconButton aria-label="dark mode" onClick={toggleTheme}>
+              <DarkModeIcon />
+            </IconButton>
           ) : (
-            <Button variant="outlined" startIcon={<LightModeIcon />} onClick={toggleTheme}>
-              Light
-            </Button>
+            <IconButton aria-label="light mode" onClick={toggleTheme}>
+              <LightModeIcon />
+            </IconButton>
           )}
         </Grid>
       </Box>

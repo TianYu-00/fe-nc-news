@@ -11,6 +11,7 @@ const darkTheme = createTheme({
       paper: "#1b2026",
       container: "#1A2027",
       footer: "#22282F",
+      opposite: "#F8F6F4",
     },
     text: {
       primary: "#ffffff",
@@ -30,6 +31,7 @@ const lightTheme = createTheme({
       paper: "#E3F4F4",
       container: "#D2E9E9",
       footer: "#C4DFDF",
+      opposite: "#22282f",
     },
     text: {
       primary: "#000000",
