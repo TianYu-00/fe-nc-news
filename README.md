@@ -56,11 +56,11 @@ This project uses [nc-news api](https://nc-portfolio-1.onrender.com/api) which i
 
 ## Links
 
-[Backend Repo](https://github.com/TianYu-00/nc-portfolio-1) 
+[Backend API Repo](https://github.com/TianYu-00/nc-portfolio-1) 
 
 [API](https://nc-portfolio-1.onrender.com/api)
 
-[Frontend Web Application](https://fe-nc-news-tian.netlify.app/home)
+[Frontend Web Application](https://fe-nc-news-tian.netlify.app)
 
 [Hosting Instruction](https://github.com/TianYu-00/fe-nc-news/blob/a8a03aea4205d2c47716144653607429b90e198b/hosting_instruction.md)
 
