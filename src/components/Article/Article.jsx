@@ -129,7 +129,7 @@ export default function Article() {
           backgroundColor: (theme) => theme.palette.background.container,
         }}
       >
-        <Box sx={{ maxWidth: "1500px", margin: "0 auto" }}>
+        <Box sx={{ maxWidth: "1000px", margin: "0 auto" }}>
           <Typography variant="h4" sx={{ marginBottom: "20px" }}>
             {article.title}
           </Typography>
@@ -145,7 +145,7 @@ export default function Article() {
             <Typography variant="h5">{article.author}</Typography>
           </Grid>
           <Typography variant="body2">{articleDate}</Typography>
-          <Box sx={{ padding: "25px" }}>
+          <Box sx={{ padding: "25px", textAlign: "left" }}>
             <Typography variant="body1">{article.body}</Typography>
           </Box>
 
